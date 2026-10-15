@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Additional colors if needed */
+  --color-brand-bg: #F8F9FA;
+  --color-brand-navy: #1E293B;
+  --color-brand-emerald: #059669;
+
+  --color-deep-forest: #061612;
+  --color-forest-surface: #0a211b;
+  --color-emerald-premium: #10b981;
+}

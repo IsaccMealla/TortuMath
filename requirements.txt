@@ -1,0 +1,20 @@
+# 🔬 Requerimientos y Dependencias de Investigación - TortuMath
+# Este archivo contiene los requerimientos para el desarrollo de Inteligencia Artificial,
+# visión computacional para el Robot Submarino ROV, simulación física y microcontroladores.
+
+# Inteligencia Artificial y Procesamiento de Lenguaje
+google-genai>=0.1.0
+openai>=1.0.0
+
+# Visión Artificial y Procesamiento de Imágenes (Usado en Robot Submarino ROV)
+opencv-python>=4.8.0
+pillow>=10.0.0
+
+# Computación Científica y Simulación Física
+numpy>=1.24.0
+scipy>=1.11.0
+matplotlib>=3.7.0
+
+# Desarrollo y Automatización de Microcontroladores (Electrónica - Arduino / ESP32)
+pyserial>=3.5
+platformio>=6.1.0

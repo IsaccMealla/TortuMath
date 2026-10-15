@@ -1,0 +1,6 @@
+{
+  "name": "TortuMath",
+  "description": "Academia de Matemáticas, Física, Programación y Electrónica en Bolivia - Aprende a tu ritmo, llega más lejos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
