@@ -5,8 +5,8 @@ import {
   Sparkles, 
   ShieldAlert, 
   ShieldCheck, 
+  Shield,
   Cpu, 
-  Lock, 
   Key, 
   UserCheck, 
   Users, 
@@ -20,8 +20,16 @@ import {
   Binary, 
   RotateCcw,
   Check,
-  ChevronRight,
-  Info
+  Terminal,
+  Layers,
+  KeyRound,
+  User,
+  GraduationCap,
+  Calculator,
+  Compass,
+  FileCode2,
+  TableProperties,
+  Sliders
 } from "lucide-react";
 import Logo from "../shared/Logo";
 
@@ -34,23 +42,23 @@ export interface RetoCapitulo1Props {
   onSuccessCompletion?: (points: number) => void;
 }
 
-// User model for Venn diagram representation
+// User model for Venn diagram representation with clean icons
 interface SystemUser {
   id: string;
   name: string;
   isAdmin: boolean;
   hasValidKey: boolean;
   role: string;
-  avatar: string;
+  iconType: "root" | "admin" | "dev" | "qa" | "guest" | "bot";
 }
 
 const SAMPLE_USERS: SystemUser[] = [
-  { id: "usr-1", name: "Carlos Arce (Root)", isAdmin: true, hasValidKey: true, role: "SuperAdmin", avatar: "👨‍💻" },
-  { id: "usr-2", name: "Valeria Ríos (Sec)", isAdmin: true, hasValidKey: false, role: "Admin Auxiliar", avatar: "👩‍💼" },
-  { id: "usr-3", name: "Pedro Mamani (Dev)", isAdmin: false, hasValidKey: true, role: "Desarrollador", avatar: "👨‍🔧" },
-  { id: "usr-4", name: "Lucía Morales (QA)", isAdmin: false, hasValidKey: true, role: "Analista QA", avatar: "👩‍🔬" },
-  { id: "usr-5", name: "Invitado Anónimo", isAdmin: false, hasValidKey: false, role: "Visitante", avatar: "👤" },
-  { id: "usr-6", name: "Bot Crawler", isAdmin: false, hasValidKey: false, role: "Tráfico Externo", avatar: "🤖" },
+  { id: "usr-1", name: "Carlos Arce", isAdmin: true, hasValidKey: true, role: "SuperAdmin / Root", iconType: "root" },
+  { id: "usr-2", name: "Valeria Ríos", isAdmin: true, hasValidKey: false, role: "Admin Auxiliar", iconType: "admin" },
+  { id: "usr-3", name: "Pedro Mamani", isAdmin: false, hasValidKey: true, role: "Desarrollador Backend", iconType: "dev" },
+  { id: "usr-4", name: "Lucía Morales", isAdmin: false, hasValidKey: true, role: "Analista de Seguridad", iconType: "qa" },
+  { id: "usr-5", name: "Visitante Anónimo", isAdmin: false, hasValidKey: false, role: "Tráfico Externo", iconType: "guest" },
+  { id: "usr-6", name: "Servicio Automatizado", isAdmin: false, hasValidKey: false, role: "Bot Crawler", iconType: "bot" },
 ];
 
 export default function RetoCapitulo1({
@@ -129,19 +137,16 @@ export default function RetoCapitulo1({
   // De Morgan equivalent: (!isAdmin && !hasValidKey)
   const blockedNormal = !(isAdmin || hasValidKey);
   const blockedDeMorgan = !isAdmin && !hasValidKey;
-  const isDeMorganEquivalent = blockedNormal === blockedDeMorgan; // Always true, proven interactively
 
-  // Server Access Status:
-  // 1. High Risk (> 50): 🔴 Bloqueado por Riesgo Elevado (Modo Seguro)
-  // 2. Logic Block: 🟡 Bloqueado por Lógica (No es admin y no tiene clave válida)
-  // 3. Safe & Authorized: 🟢 Acceso Concedido
+  // Server Access Status (Clean indicators, no emojis)
   const serverStatus = useMemo(() => {
     if (isSafeModeActive) {
       return {
         level: "danger",
         title: "Servidor Bloqueado por Riesgo Elevado",
         color: "text-red-400 border-red-500/40 bg-red-500/10",
-        badge: "🔴 MODO SEGURO ACTIVO (R > 50)",
+        badgeText: "MODO SEGURO ACTIVO (R > 50)",
+        dotColor: "bg-red-400",
         description: "El sistema ha activado el aislamiento preventivo debido a sobrecarga computacional o posible ataque de fuerza bruta."
       };
     }
@@ -150,7 +155,8 @@ export default function RetoCapitulo1({
         level: "warning",
         title: "Acceso Bloqueado por Lógica",
         color: "text-amber-400 border-amber-500/40 bg-amber-500/10",
-        badge: "🟡 ACCESO DENEGADO (¬A ∧ ¬B)",
+        badgeText: "ACCESO DENEGADO (¬A ∧ ¬B)",
+        dotColor: "bg-amber-400",
         description: "El usuario no cuenta con privilegios administrativos ni posee una clave criptográfica válida."
       };
     }
@@ -158,7 +164,8 @@ export default function RetoCapitulo1({
       level: "success",
       title: "Acceso Concedido",
       color: "text-emerald-400 border-emerald-500/40 bg-emerald-500/10",
-      badge: "🟢 ACCESO AUTORIZADO (A ∨ B)",
+      badgeText: "ACCESO AUTORIZADO (A ∨ B)",
+      dotColor: "bg-emerald-400",
       description: "El nivel de riesgo operacional es seguro y las credenciales superaron la regla de acceso lógico."
     };
   }, [isSafeModeActive, blockedNormal]);
@@ -187,19 +194,39 @@ export default function RetoCapitulo1({
     });
   }, [selectedOperation]);
 
+  // Helper for rendering user role icons cleanly
+  const renderUserIcon = (iconType: string) => {
+    switch (iconType) {
+      case "root":
+        return <ShieldCheck className="w-4 h-4 text-emerald-400" />;
+      case "admin":
+        return <Shield className="w-4 h-4 text-emerald-400" />;
+      case "dev":
+        return <Terminal className="w-4 h-4 text-cyan-400" />;
+      case "qa":
+        return <KeyRound className="w-4 h-4 text-cyan-400" />;
+      case "guest":
+        return <User className="w-4 h-4 text-slate-400" />;
+      case "bot":
+        return <Cpu className="w-4 h-4 text-slate-400" />;
+      default:
+        return <User className="w-4 h-4 text-slate-400" />;
+    }
+  };
+
   // 4. Submission & Backend State
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [toastMessage, setToastMessage] = useState<{ text: string; type: "success" | "error" | "info" } | null>(null);
 
-  // Play triumph chord with Web Audio API (cross-platform, zero asset dependency)
+  // Play triumph chord with Web Audio API (cross-platform)
   const playAchievementSound = () => {
     try {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioContextClass) return;
       const ctx = new AudioContextClass();
       
-      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6 (Arpeggio Triad)
+      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
       notes.forEach((freq, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -217,7 +244,7 @@ export default function RetoCapitulo1({
         osc.stop(ctx.currentTime + idx * 0.09 + 0.5);
       });
     } catch {
-      // Audio autoplay policy fallback
+      // Audio fallback
     }
   };
 
@@ -241,30 +268,27 @@ export default function RetoCapitulo1({
     };
 
     try {
-      // Send to both endpoints for robustness
-      const res = await fetch("http://localhost:5000/api/quizzes", {
+      await fetch("http://localhost:5000/api/quizzes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(quizPayload)
       }).catch(() => null);
 
-      // Play victory sound and show celebration
       playAchievementSound();
       setIsCompleted(true);
-      showToast("🎉 ¡Reto del Capítulo 1 Completado con éxito! +50 TortuPuntos otorgados y racha aumentada.", "success");
+      showToast("Reto del Capítulo 1 verificado y completado. +50 TortuPuntos otorgados y racha de estudio incrementada.", "success");
 
       if (onSuccessCompletion) {
         onSuccessCompletion(50);
       }
 
-      // Also persist to local storage for instant offline resilience
       const existingPoints = parseInt(localStorage.getItem("tortumath_tortupuntos") || "150", 10);
       localStorage.setItem("tortumath_tortupuntos", (existingPoints + 50).toString());
 
       const currentStreak = parseInt(localStorage.getItem("tortumath_streak") || "4", 10);
       localStorage.setItem("tortumath_streak", (currentStreak + 1).toString());
-    } catch (err: any) {
-      showToast("Reto verificado localmente. ¡Puntos acreditados con éxito!", "success");
+    } catch {
+      showToast("Reto verificado localmente. Puntos acreditados con éxito.", "success");
       playAchievementSound();
       setIsCompleted(true);
     } finally {
@@ -284,10 +308,10 @@ export default function RetoCapitulo1({
             className="fixed top-5 right-5 z-50 max-w-md p-4 rounded-xl shadow-2xl backdrop-blur-xl border border-emerald-500/40 bg-neutral-900/95 text-white flex items-start gap-3"
           >
             <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
-              <Sparkles className="w-5 h-5 animate-spin" />
+              <Award className="w-5 h-5 text-emerald-400" />
             </div>
             <div className="flex-1">
-              <h4 className="font-bold text-sm text-emerald-300">¡Logro Académico Desbloqueado!</h4>
+              <h4 className="font-bold text-sm text-emerald-300">Logro Académico Desbloqueado</h4>
               <p className="text-xs text-slate-300 mt-0.5">{toastMessage.text}</p>
             </div>
           </motion.div>
@@ -312,53 +336,56 @@ export default function RetoCapitulo1({
               Tortu<span className={themeStyles.accentText}>Math</span>
             </h1>
             <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-              Libro Interactivo
+              Plataforma Interactiva
             </span>
           </div>
         </div>
 
         {/* Central Badge for QR Scanner */}
         <div className="flex items-center gap-2">
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${themeStyles.badgeClass} shadow-sm`}>
-            <BookOpen className="w-3.5 h-3.5" />
-            📖 Reto del Libro de Texto — Capítulo 1
+          <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${themeStyles.badgeClass} shadow-sm`}>
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            <span>Reto del Libro de Texto — Capítulo 1</span>
           </span>
         </div>
 
-        {/* Theme Picker */}
+        {/* Theme Picker with Logos/Icons */}
         <div className="flex items-center gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
           <button
             onClick={() => {
               setTheme("tortuga");
               localStorage.setItem("tortumath_student_theme", "tortuga");
             }}
-            className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               theme === "tortuga" ? "bg-emerald-600 text-white shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
-            🐢 Tortuga
+            <Shield className="w-3.5 h-3.5" />
+            <span>Tortuga</span>
           </button>
           <button
             onClick={() => {
               setTheme("matrix");
               localStorage.setItem("tortumath_student_theme", "matrix");
             }}
-            className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer font-mono ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer font-mono ${
               theme === "matrix" ? "bg-[#00FF66] text-black shadow-sm font-extrabold" : "text-slate-400 hover:text-[#00FF66]"
             }`}
           >
-            ⚡ Matrix
+            <Terminal className="w-3.5 h-3.5" />
+            <span>Matrix</span>
           </button>
           <button
             onClick={() => {
               setTheme("cyber");
               localStorage.setItem("tortumath_student_theme", "cyber");
             }}
-            className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               theme === "cyber" ? "bg-[#00D2FF] text-[#030612] shadow-sm font-extrabold" : "text-slate-400 hover:text-[#00D2FF]"
             }`}
           >
-            🔮 Cyber
+            <Layers className="w-3.5 h-3.5" />
+            <span>Cyber</span>
           </button>
         </div>
       </header>
@@ -374,11 +401,12 @@ export default function RetoCapitulo1({
         >
           <div className="relative z-10 max-w-3xl space-y-3">
             <div className="flex items-center gap-2">
-              <span className={`px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider ${themeStyles.badgeClass}`}>
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider ${themeStyles.badgeClass}`}>
+                <GraduationCap className="w-3.5 h-3.5 text-emerald-400" />
                 Ingeniería de Sistemas • Módulo Práctico
               </span>
-              <span className="text-xs text-slate-400 flex items-center gap-1">
-                <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> +50 TortuPuntos en juego
+              <span className="text-xs text-slate-300 flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-bold">
+                <Flame className="w-3.5 h-3.5 text-amber-400" /> +50 TortuPuntos Disponibles
               </span>
             </div>
 
@@ -387,20 +415,19 @@ export default function RetoCapitulo1({
             </h2>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-              Bienvenido al laboratorio sincrónico de apoyo al libro impreso. En este reto aplicarás 
-              <strong> funciones de múltiples variables</strong> para modelar el nivel de riesgo en servidores, 
-              validarás las <strong>Leyes de De Morgan</strong> en tiempo real y explorarás 
-              <strong> operaciones de conjuntos</strong> en diagramas interactivos de Venn.
+              Laboratorio interactivo de vinculación con el libro de texto. Modela el riesgo en infraestructura de servidores utilizando 
+              <strong> funciones de múltiples variables</strong>, comprueba las <strong>Leyes de De Morgan</strong> mediante evaluación lógica en vivo 
+              y explora <strong>operaciones de conjuntos</strong> en diagramas vectoriales de Venn.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-slate-300">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-white/5">
                 <UserCheck className="w-4 h-4 text-emerald-400" />
                 <span>Estudiante: <strong>{studentName}</strong> ({studentId})</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-white/5">
                 <Binary className="w-4 h-4 text-cyan-400" />
-                <span>Lógica Proposicional & Álgebra de Boole</span>
+                <span>Lógica Proposicional & Álgebra Booleana</span>
               </div>
             </div>
           </div>
@@ -412,14 +439,14 @@ export default function RetoCapitulo1({
 
         {/* Section 2: Simulador Interactivo en Tiempo Real (Física y Lógica del Servidor) */}
         <section className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="space-y-0.5">
               <h3 className="text-xl font-black text-white flex items-center gap-2">
-                <Cpu className={`w-5 h-5 ${themeStyles.accentText}`} />
+                <Sliders className={`w-5 h-5 ${themeStyles.accentText}`} />
                 1. Panel de Control y Simulador de Riesgo Multivariable
               </h3>
               <p className="text-xs text-slate-400">
-                Ajusta las variables de entrada y observa cómo la función matemática $R(c, i)$ y la lógica booleana determinan el acceso al servidor.
+                Ajusta los parámetros operativos y analiza cómo la función de riesgo $R(c, i)$ y la lógica booleana determinan el acceso al servidor.
               </p>
             </div>
             
@@ -430,7 +457,7 @@ export default function RetoCapitulo1({
                 setIsAdmin(true);
                 setHasValidKey(true);
               }}
-              className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer border border-white/10"
+              className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer border border-white/10 self-start sm:self-auto"
             >
               <RotateCcw className="w-3.5 h-3.5" /> Reestablecer Parámetros
             </button>
@@ -441,16 +468,16 @@ export default function RetoCapitulo1({
             {/* Left Column: Sliders and Switches (Controls) */}
             <div className={`lg:col-span-6 p-6 rounded-2xl ${themeStyles.bgCard} space-y-6`}>
               <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-700/60 pb-3">
-                <Zap className="w-4 h-4 text-amber-400" /> Variables de Entrada del Sistema
+                <Zap className="w-4 h-4 text-amber-400" /> Parámetros de Entrada del Servidor
               </h4>
 
               {/* Slider 1: CPU Usage */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
                   <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                    <Cpu className="w-4 h-4 text-cyan-400" /> Uso de CPU ($c$):
+                    <Cpu className="w-4 h-4 text-cyan-400" /> Carga de Procesador ($c$):
                   </span>
-                  <span className="font-mono font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                  <span className="font-mono font-black text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/30">
                     {cpuUsage}%
                   </span>
                 </div>
@@ -464,9 +491,9 @@ export default function RetoCapitulo1({
                   className={`w-full h-2 rounded-lg bg-slate-800 ${themeStyles.sliderAccent} cursor-pointer`}
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0% (Reposo)</span>
-                  <span>50% (Carga Nominal)</span>
-                  <span>100% (Sobrecarga)</span>
+                  <span>0% (Carga Mínima)</span>
+                  <span>50% (Régimen Normal)</span>
+                  <span>100% (Saturación)</span>
                 </div>
               </div>
 
@@ -474,9 +501,9 @@ export default function RetoCapitulo1({
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
                   <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                    <AlertTriangle className="w-4 h-4 text-amber-400" /> Intentos Fallidos ($i$):
+                    <AlertTriangle className="w-4 h-4 text-amber-400" /> Intentos Fallidos de Inicio de Sesión ($i$):
                   </span>
-                  <span className="font-mono font-black text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                  <span className="font-mono font-black text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
                     {failedAttempts} intentos
                   </span>
                 </div>
@@ -485,29 +512,28 @@ export default function RetoCapitulo1({
                   min="0"
                   max="100"
                   step="1"
-                  // mapping 0-10 visually
                   value={failedAttempts * 10}
                   onChange={(e) => setFailedAttempts(Math.round(Number(e.target.value) / 10))}
                   className={`w-full h-2 rounded-lg bg-slate-800 ${themeStyles.sliderAccent} cursor-pointer`}
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>0 (Limpio)</span>
-                  <span>5 (Sospechoso)</span>
-                  <span>10 (Fuerza Bruta)</span>
+                  <span>0 (Sesiones Limpias)</span>
+                  <span>5 (Umbral Sospechoso)</span>
+                  <span>10 (Ataque Detectado)</span>
                 </div>
               </div>
 
               {/* Boolean Switches: es_admin and tiene_clave_valida */}
               <div className="pt-2 border-t border-slate-700/60 space-y-3">
                 <span className="text-xs font-bold text-slate-300 block">
-                  Proposiciones Booleanas de Autenticación:
+                  Proposiciones Booleanas de Acceso:
                 </span>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Switch 1: es_admin ($A$) */}
-                  <label className={`flex items-center justify-between p-3 rounded-xl ${themeStyles.bgCardSubtle} cursor-pointer hover:border-slate-500 transition-all`}>
-                    <div className="flex items-center gap-2">
-                      <UserCheck className={`w-4 h-4 ${isAdmin ? "text-emerald-400" : "text-slate-500"}`} />
+                  <label className={`flex items-center justify-between p-3 rounded-xl ${themeStyles.bgCardSubtle} cursor-pointer hover:border-slate-500 transition-all border border-slate-800`}>
+                    <div className="flex items-center gap-2.5">
+                      <ShieldCheck className={`w-4 h-4 ${isAdmin ? "text-emerald-400" : "text-slate-500"}`} />
                       <div>
                         <span className="text-xs font-bold text-white block">Es Administrador</span>
                         <span className="text-[10px] text-slate-400 font-mono">Proposición $A$</span>
@@ -522,8 +548,8 @@ export default function RetoCapitulo1({
                   </label>
 
                   {/* Switch 2: tiene_clave_valida ($B$) */}
-                  <label className={`flex items-center justify-between p-3 rounded-xl ${themeStyles.bgCardSubtle} cursor-pointer hover:border-slate-500 transition-all`}>
-                    <div className="flex items-center gap-2">
+                  <label className={`flex items-center justify-between p-3 rounded-xl ${themeStyles.bgCardSubtle} cursor-pointer hover:border-slate-500 transition-all border border-slate-800`}>
+                    <div className="flex items-center gap-2.5">
                       <Key className={`w-4 h-4 ${hasValidKey ? "text-cyan-400" : "text-slate-500"}`} />
                       <div>
                         <span className="text-xs font-bold text-white block">Clave Válida</span>
@@ -541,15 +567,15 @@ export default function RetoCapitulo1({
               </div>
 
               {/* Function Math Formula Box */}
-              <div className="p-3.5 rounded-xl bg-black/40 border border-slate-800 font-mono text-xs text-slate-300 space-y-1">
-                <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                  📐 Función Matemática Aplicada:
+              <div className="p-3.5 rounded-xl bg-black/40 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5">
+                <span className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1 tracking-wider">
+                  <Calculator className="w-3.5 h-3.5 text-emerald-400" /> Función Matemática de Modelado de Riesgo:
                 </span>
                 <p className="text-white font-bold">
                   R(c, i) = 0.5 \cdot c + 10 \cdot i = 0.5({cpuUsage}) + 10({failedAttempts}) = <span className="text-emerald-400 text-sm">{riskScore} pts</span>
                 </p>
                 <p className="text-[11px] text-slate-400">
-                  Condición de Bloqueo: Si $R(c, i) &gt; 50$, el servidor activa el <strong>Modo Seguro</strong> preventivo.
+                  Condición de Seguridad: Cuando $R(c, i) &gt; 50$, el servidor activa automáticamente el <strong>Modo Seguro</strong> preventivo.
                 </p>
               </div>
             </div>
@@ -561,10 +587,11 @@ export default function RetoCapitulo1({
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400" /> Estado Operacional del Servidor
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" /> Estado de Autorización del Servidor
                   </h4>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-black ${serverStatus.color}`}>
-                    {serverStatus.badge}
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black ${serverStatus.color}`}>
+                    <span className={`w-2 h-2 rounded-full ${serverStatus.dotColor} animate-pulse`}></span>
+                    {serverStatus.badgeText}
                   </span>
                 </div>
 
@@ -588,18 +615,18 @@ export default function RetoCapitulo1({
               {/* Risk Level Gauge Bar */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-bold text-slate-300">Medidor de Nivel de Riesgo Operacional:</span>
+                  <span className="font-bold text-slate-300">Nivel de Riesgo Operacional Calculado:</span>
                   <span className={`font-mono font-black text-sm ${riskScore > 50 ? "text-red-400" : riskScore > 30 ? "text-amber-400" : "text-emerald-400"}`}>
                     {riskScore} / 150 pts
                   </span>
                 </div>
 
                 <div className="w-full h-4 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-700/80 relative">
-                  {/* Safe Zone line at 50 points (scaled to 100% assuming max around 150) */}
+                  {/* Safe Zone line at 50 points */}
                   <div 
                     className="absolute top-0 bottom-0 border-r-2 border-red-500 z-10" 
                     style={{ left: `${Math.min(100, (50 / 150) * 100)}%` }}
-                    title="Límite Umbral de Riesgo (50 pts)"
+                    title="Umbral de Alerta Crítica (50 pts)"
                   />
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
@@ -612,9 +639,9 @@ export default function RetoCapitulo1({
                 </div>
                 
                 <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span className="text-emerald-400">0 - 30 (Zona Segura)</span>
-                  <span className="text-amber-400">30 - 50 (Alerta Media)</span>
-                  <span className="text-red-400 font-bold">&gt; 50 (Peligro Inminente)</span>
+                  <span className="text-emerald-400 font-bold">0 - 30 (Zona Segura)</span>
+                  <span className="text-amber-400 font-bold">30 - 50 (Alerta Preventiva)</span>
+                  <span className="text-red-400 font-bold">&gt; 50 (Modo Seguro Obligatorio)</span>
                 </div>
               </div>
 
@@ -622,17 +649,17 @@ export default function RetoCapitulo1({
               <div className={`p-4 rounded-xl ${themeStyles.bgCardSubtle} border border-slate-700/60 space-y-3`}>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <Binary className="w-4 h-4 text-cyan-400" /> Demostración en Vivo: Leyes de De Morgan
+                    <FileCode2 className="w-4 h-4 text-cyan-400" /> Demostración Formal: Leyes de De Morgan
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
-                    Equivalencia Idéntica (≡)
+                    Equivalencia Lógica Idéntica (≡)
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
                   {/* Forma Normal */}
                   <div className="p-3 rounded-lg bg-black/50 border border-slate-800 space-y-1">
-                    <span className="text-[10px] text-slate-400 block font-sans">Forma Normal:</span>
+                    <span className="text-[10px] text-slate-400 block font-sans">Expresión Clásica:</span>
                     <p className="text-white font-bold">
                       ¬(A ∨ B)
                     </p>
@@ -643,7 +670,7 @@ export default function RetoCapitulo1({
 
                   {/* Forma De Morgan */}
                   <div className="p-3 rounded-lg bg-black/50 border border-slate-800 space-y-1">
-                    <span className="text-[10px] text-slate-400 block font-sans">Forma De Morgan:</span>
+                    <span className="text-[10px] text-slate-400 block font-sans">Forma Simplificada De Morgan:</span>
                     <p className="text-white font-bold">
                       (¬A ∧ ¬B)
                     </p>
@@ -653,8 +680,67 @@ export default function RetoCapitulo1({
                   </div>
                 </div>
 
-                <p className="text-[11px] text-slate-400 leading-snug">
-                  📌 <em>Conclusión Matemática:</em> La regla <code className="text-emerald-300 font-bold">¬(A ∨ B) ≡ (¬A ∧ ¬B)</code> demuestra que denegar el acceso a quien <em>no sea administrador o no tenga clave</em> es exactamente idéntico a exigir que el usuario <em>sea no-admin Y carezca de clave válida</em> simultáneamente.
+                {/* Didactic Truth Table Highlight */}
+                <div className="pt-2 border-t border-slate-800 space-y-1.5">
+                  <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider flex items-center gap-1">
+                    <TableProperties className="w-3.5 h-3.5 text-emerald-400" /> Tabla de Verdad de la Equivalencia (Fila Activa Resaltada):
+                  </span>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-[10px] text-center font-mono border-collapse">
+                      <thead>
+                        <tr className="border-b border-slate-800 text-slate-400">
+                          <th className="py-1 px-2">A (Admin)</th>
+                          <th className="py-1 px-2">B (Clave)</th>
+                          <th className="py-1 px-2">A ∨ B</th>
+                          <th className="py-1 px-2">¬(A ∨ B)</th>
+                          <th className="py-1 px-2">(¬A ∧ ¬B)</th>
+                          <th className="py-1 px-2">Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          { a: false, b: false, label: "Visitante no autorizado" },
+                          { a: false, b: true, label: "Usuario con credencial" },
+                          { a: true, b: false, label: "Admin sin clave" },
+                          { a: true, b: true, label: "Admin autenticado" },
+                        ].map((row, idx) => {
+                          const aOrB = row.a || row.b;
+                          const notAorB = !aOrB;
+                          const notAandNotB = (!row.a) && (!row.b);
+                          const isCurrent = (row.a === isAdmin) && (row.b === hasValidKey);
+
+                          return (
+                            <tr
+                              key={idx}
+                              className={`border-b border-slate-900 transition-colors ${
+                                isCurrent 
+                                  ? "bg-emerald-500/20 text-emerald-300 font-bold border-emerald-500/40" 
+                                  : "text-slate-400"
+                              }`}
+                            >
+                              <td className="py-1 px-2">{row.a ? "1" : "0"}</td>
+                              <td className="py-1 px-2">{row.b ? "1" : "0"}</td>
+                              <td className="py-1 px-2">{aOrB ? "1" : "0"}</td>
+                              <td className="py-1 px-2">{notAorB ? "1" : "0"}</td>
+                              <td className="py-1 px-2">{notAandNotB ? "1" : "0"}</td>
+                              <td className="py-1 px-2 font-sans text-[9px]">
+                                {isCurrent ? "← Caso Actual" : row.label}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-slate-400 leading-snug flex items-start gap-1.5 pt-1">
+                  <Compass className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Principio de Ingeniería:</strong> En arquitectura de cortafuegos (Firewalls) y consultas a bases de datos, 
+                    la regla <code className="text-emerald-300 font-bold">¬(A ∨ B) ≡ (¬A ∧ ¬B)</code> permite optimizar la evaluación de reglas reduciendo ciclos de CPU.
+                  </span>
                 </p>
               </div>
 
@@ -671,11 +757,11 @@ export default function RetoCapitulo1({
                 2. Visualizador Interactivo de Teoría de Conjuntos (Diagrama de Venn)
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                Representación del Conjunto Universal $U$ (Usuarios), $A$ (Administradores) y $B$ (Usuarios con Clave Válida).
+                Representación del Conjunto Universal $U$ (Usuarios del Sistema), $A$ (Administradores) y $B$ (Usuarios con Clave Válida).
               </p>
             </div>
 
-            {/* Operation Selector Buttons */}
+            {/* Operation Selector Buttons with Icons */}
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setSelectedOperation("union")}
@@ -715,7 +801,7 @@ export default function RetoCapitulo1({
           {/* Venn Diagram Visualizer Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
-            {/* SVG Interactive Venn Canvas */}
+            {/* SVG Interactive Venn Canvas with Vector Glyphs */}
             <div className="lg:col-span-7 flex flex-col items-center justify-center p-4 bg-black/50 rounded-2xl border border-slate-800">
               <svg
                 viewBox="0 0 540 320"
@@ -725,9 +811,6 @@ export default function RetoCapitulo1({
                   {/* Clip Path for Intersection A and B */}
                   <clipPath id="clipA">
                     <circle cx="210" cy="160" r="110" />
-                  </clipPath>
-                  <clipPath id="clipB">
-                    <circle cx="330" cy="160" r="110" />
                   </clipPath>
 
                   {/* Gradient for Active Regions */}
@@ -747,7 +830,7 @@ export default function RetoCapitulo1({
                   className={`fill-neutral-950/80 stroke-slate-800 ${selectedOperation === "complement" ? "stroke-cyan-400 stroke-2" : "stroke-1"}`}
                 />
                 <text x="35" y="42" fill="#94A3B8" fontSize="13" fontWeight="bold" fontFamily="sans-serif">
-                  U (Universo: Todos los Usuarios del Sistema)
+                  U (Universo: Infraestructura Completa de Usuarios)
                 </text>
 
                 {/* Complement Highlight when selected */}
@@ -811,55 +894,70 @@ export default function RetoCapitulo1({
                   Conjunto B: Con Clave
                 </text>
 
-                {/* User Nodes plotted inside regions */}
+                {/* Vector User Nodes (Clean Vector Glyphs) */}
                 {/* 1. Only A (Valeria Ríos - Admin sin clave) */}
                 <g className="cursor-pointer">
-                  <circle cx="170" cy="160" r="14" fill="#064E3B" stroke="#10B981" strokeWidth="1.5" />
-                  <text x="170" y="164" fill="#E2E8F0" fontSize="11" textAnchor="middle">👩‍💼</text>
-                  <text x="170" y="185" fill="#A7F3D0" fontSize="9" textAnchor="middle" fontWeight="bold">Valeria</text>
+                  <circle cx="170" cy="155" r="16" fill="#064E3B" stroke="#10B981" strokeWidth="1.5" />
+                  {/* Shield vector glyph */}
+                  <path d="M165 149 L170 146 L175 149 L175 156 Q170 162 165 156 Z" fill="none" stroke="#34D399" strokeWidth="1.5" />
+                  <text x="170" y="185" fill="#A7F3D0" fontSize="9" textAnchor="middle" fontWeight="bold">Valeria (Admin)</text>
                 </g>
 
                 {/* 2. Intersection A ∩ B (Carlos Arce - Root Admin con clave) */}
                 <g className="cursor-pointer">
-                  <circle cx="270" cy="160" r="16" fill="#083344" stroke="#22D3EE" strokeWidth="2" />
-                  <text x="270" y="165" fill="#E2E8F0" fontSize="13" textAnchor="middle">👨‍💻</text>
+                  <circle cx="270" cy="155" r="18" fill="#083344" stroke="#22D3EE" strokeWidth="2" />
+                  {/* Shield + Key vector glyph */}
+                  <path d="M264 148 L270 145 L276 148 L276 156 Q270 162 264 156 Z" fill="none" stroke="#38BDF8" strokeWidth="1.5" />
+                  <circle cx="270" cy="152" r="2" fill="#38BDF8" />
                   <text x="270" y="187" fill="#67E8F9" fontSize="9" textAnchor="middle" fontWeight="bold">Carlos (Root)</text>
                 </g>
 
-                {/* 3. Only B (Pedro Mamani & Lucía Morales - Usuarios regulares con clave) */}
+                {/* 3. Only B (Pedro Mamani & Lucía Morales) */}
                 <g className="cursor-pointer">
-                  <circle cx="360" cy="140" r="14" fill="#164E63" stroke="#06B6D4" strokeWidth="1.5" />
-                  <text x="360" y="144" fill="#E2E8F0" fontSize="11" textAnchor="middle">👨‍🔧</text>
-                  <text x="360" y="165" fill="#BAE6FD" fontSize="9" textAnchor="middle" fontWeight="bold">Pedro</text>
+                  <circle cx="360" cy="135" r="15" fill="#164E63" stroke="#06B6D4" strokeWidth="1.5" />
+                  {/* Terminal vector glyph */}
+                  <rect x="354" y="130" width="12" height="9" rx="2" fill="none" stroke="#67E8F9" strokeWidth="1.2" />
+                  <line x1="357" y1="133" x2="359" y2="135" stroke="#67E8F9" strokeWidth="1.2" />
+                  <text x="360" y="160" fill="#BAE6FD" fontSize="9" textAnchor="middle" fontWeight="bold">Pedro (Dev)</text>
                 </g>
+
                 <g className="cursor-pointer">
-                  <circle cx="375" cy="190" r="14" fill="#164E63" stroke="#06B6D4" strokeWidth="1.5" />
-                  <text x="375" y="194" fill="#E2E8F0" fontSize="11" textAnchor="middle">👩‍🔬</text>
-                  <text x="375" y="215" fill="#BAE6FD" fontSize="9" textAnchor="middle" fontWeight="bold">Lucía</text>
+                  <circle cx="375" cy="190" r="15" fill="#164E63" stroke="#06B6D4" strokeWidth="1.5" />
+                  {/* Key vector glyph */}
+                  <circle cx="372" cy="188" r="3" fill="none" stroke="#67E8F9" strokeWidth="1.2" />
+                  <line x1="375" y1="188" x2="380" y2="188" stroke="#67E8F9" strokeWidth="1.2" />
+                  <line x1="378" y1="188" x2="378" y2="191" stroke="#67E8F9" strokeWidth="1.2" />
+                  <text x="375" y="215" fill="#BAE6FD" fontSize="9" textAnchor="middle" fontWeight="bold">Lucía (QA)</text>
                 </g>
 
                 {/* 4. Outside A and B: U \ (A ∪ B) (Invitado y Bot Crawler) */}
                 <g className="cursor-pointer">
-                  <circle cx="65" cy="250" r="14" fill="#1E293B" stroke="#64748B" strokeWidth="1.5" />
-                  <text x="65" y="254" fill="#CBD5E1" fontSize="11" textAnchor="middle">👤</text>
+                  <circle cx="65" cy="250" r="15" fill="#1E293B" stroke="#64748B" strokeWidth="1.5" />
+                  {/* User vector glyph */}
+                  <circle cx="65" cy="246" r="3" fill="none" stroke="#94A3B8" strokeWidth="1.2" />
+                  <path d="M60 255 C60 252 70 252 70 255" fill="none" stroke="#94A3B8" strokeWidth="1.2" />
                   <text x="65" y="275" fill="#94A3B8" fontSize="9" textAnchor="middle" fontWeight="bold">Invitado</text>
                 </g>
+
                 <g className="cursor-pointer">
-                  <circle cx="470" cy="250" r="14" fill="#1E293B" stroke="#64748B" strokeWidth="1.5" />
-                  <text x="470" y="254" fill="#CBD5E1" fontSize="11" textAnchor="middle">🤖</text>
+                  <circle cx="470" cy="250" r="15" fill="#1E293B" stroke="#64748B" strokeWidth="1.5" />
+                  {/* Bot vector glyph */}
+                  <rect x="465" y="244" width="10" height="9" rx="2" fill="none" stroke="#94A3B8" strokeWidth="1.2" />
+                  <circle cx="468" cy="247" r="1" fill="#94A3B8" />
+                  <circle cx="472" cy="247" r="1" fill="#94A3B8" />
                   <text x="470" y="275" fill="#94A3B8" fontSize="9" textAnchor="middle" fontWeight="bold">Bot</text>
                 </g>
               </svg>
 
               <div className="flex items-center gap-4 text-[11px] text-slate-400 mt-2 font-mono">
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> $A$: Administradores ({SAMPLE_USERS.filter(u => u.isAdmin).length})
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Conjunto $A$: Admins ({SAMPLE_USERS.filter(u => u.isAdmin).length})
                 </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> $B$: Con Clave ({SAMPLE_USERS.filter(u => u.hasValidKey).length})
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> Conjunto $B$: Con Clave ({SAMPLE_USERS.filter(u => u.hasValidKey).length})
                 </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Total $U$: ({SAMPLE_USERS.length})
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Universo $U$ ({SAMPLE_USERS.length})
                 </span>
               </div>
             </div>
@@ -908,11 +1006,11 @@ export default function RetoCapitulo1({
                 )}
               </div>
 
-              {/* Elements Table / Badges */}
+              {/* Elements Table / Badges with Vector Icons */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-bold text-slate-300">Elementos Filtrados ({filteredVennUsers.length}):</span>
-                  <span className="text-slate-400 font-mono text-[11px]">{Math.round((filteredVennUsers.length / SAMPLE_USERS.length) * 100)}% de $U$</span>
+                  <span className="text-slate-400 font-mono text-[11px]">{Math.round((filteredVennUsers.length / SAMPLE_USERS.length) * 100)}% del Universo $U$</span>
                 </div>
 
                 <div className="space-y-1.5 max-h-[190px] overflow-y-auto pr-1">
@@ -921,8 +1019,10 @@ export default function RetoCapitulo1({
                       key={u.id}
                       className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between text-xs"
                     >
-                      <div className="flex items-center gap-2">
-                        <span className="text-base">{u.avatar}</span>
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 rounded-lg bg-black/40 border border-slate-800">
+                          {renderUserIcon(u.iconType)}
+                        </div>
                         <div>
                           <span className="font-bold text-white block">{u.name}</span>
                           <span className="text-[10px] text-slate-400">{u.role}</span>
@@ -970,8 +1070,8 @@ export default function RetoCapitulo1({
               <div className="flex items-center gap-3 px-6 py-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300">
                 <Check className="w-5 h-5" />
                 <div className="text-left">
-                  <span className="font-black text-sm block">¡Reto Completado!</span>
-                  <span className="text-[10px] opacity-80">+50 TortuPuntos Sumados</span>
+                  <span className="font-black text-sm block">Reto Completado con Éxito</span>
+                  <span className="text-[10px] opacity-80">+50 TortuPuntos Registrados</span>
                 </div>
               </div>
             ) : (

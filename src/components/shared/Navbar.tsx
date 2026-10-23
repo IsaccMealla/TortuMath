@@ -83,7 +83,7 @@ export default function Navbar({ onOpenLogin }: NavbarProps) {
             title="Escaneo QR del Libro Impreso"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            <span>📖 Reto Libro QR</span>
+            <span>Reto Libro QR</span>
           </a>
 
           {/* Secondary phone link */}
