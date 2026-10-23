@@ -29,7 +29,12 @@ import {
   Compass,
   FileCode2,
   TableProperties,
-  Sliders
+  Sliders,
+  HelpCircle,
+  Lightbulb,
+  X,
+  ChevronRight,
+  Info
 } from "lucide-react";
 import Logo from "../shared/Logo";
 
@@ -73,6 +78,10 @@ export default function RetoCapitulo1({
   const [theme, setTheme] = useState<"tortuga" | "matrix" | "cyber">(() => {
     return (localStorage.getItem("tortumath_student_theme") as any) || initialTheme;
   });
+
+  // Tutorial / Didactic Guide Modal State
+  const [tutorialModalOpen, setTutorialModalOpen] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
 
   const themeStyles = {
     tortuga: {
@@ -133,8 +142,6 @@ export default function RetoCapitulo1({
   const isSafeModeActive = riskScore > 50;
 
   // Formal Logic: De Morgan's Law Verification
-  // Normal form: !(isAdmin || hasValidKey)
-  // De Morgan equivalent: (!isAdmin && !hasValidKey)
   const blockedNormal = !(isAdmin || hasValidKey);
   const blockedDeMorgan = !isAdmin && !hasValidKey;
 
@@ -296,6 +303,102 @@ export default function RetoCapitulo1({
     }
   };
 
+  // Tutorial Steps Definition
+  const tutorialSteps = [
+    {
+      title: "Objetivo del Laboratorio Didáctico",
+      icon: <GraduationCap className="w-5 h-5 text-emerald-400" />,
+      content: (
+        <div className="space-y-2 text-xs text-slate-300">
+          <p>
+            ¡Bienvenido al laboratorio interactivo de apoyo al <strong>Capítulo 1: Fundamentos Matemáticos</strong> del libro impreso de 
+            <em> Matemáticas para Ingeniería de Sistemas</em>!
+          </p>
+          <p>
+            En este módulo interactivo pondrás en práctica tres competencias clave de la ingeniería moderna:
+          </p>
+          <ul className="list-disc list-inside space-y-1 text-slate-200">
+            <li><strong>Modelado Matemático Multivariable</strong> para predecir sobrecargas de servidores.</li>
+            <li><strong>Lógica Proposicional y Leyes de De Morgan</strong> para la construcción de reglas de acceso.</li>
+            <li><strong>Teoría de Conjuntos (Diagramas de Venn)</strong> para el filtrado de roles de usuarios.</li>
+          </ul>
+        </div>
+      )
+    },
+    {
+      title: "Paso 1: Modelado de Riesgo con Funciones Multivariables",
+      icon: <Sliders className="w-5 h-5 text-cyan-400" />,
+      content: (
+        <div className="space-y-2 text-xs text-slate-300">
+          <p>
+            En la Sección 1 encontrarás dos deslizadores que representan variables de entrada:
+          </p>
+          <div className="p-2.5 rounded-lg bg-black/50 border border-slate-800 font-mono text-[11px] text-white">
+            R(c, i) = 0.5 \cdot c + 10 \cdot i
+          </div>
+          <p>
+            <strong>¿Qué debes hacer?</strong> Mueve la carga de CPU ($c$) y los intentos fallidos ($i$). Si el resultado de la función supera los 
+            <strong> 50 puntos</strong>, el servidor entrará de inmediato en <strong>Modo Seguro</strong> para proteger los datos contra ataques de fuerza bruta.
+          </p>
+        </div>
+      )
+    },
+    {
+      title: "Paso 2: Comprobación de las Leyes de De Morgan",
+      icon: <FileCode2 className="w-5 h-5 text-amber-400" />,
+      content: (
+        <div className="space-y-2 text-xs text-slate-300">
+          <p>
+            En la columna derecha encontrarás los interruptores booleanos:
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li>$A$: <em>Es Administrador</em> (Verdadero / Falso)</li>
+            <li>$B$: <em>Posee Clave Válida</em> (Verdadero / Falso)</li>
+          </ul>
+          <p>
+            <strong>¿Qué debes observar?</strong> Compara la expresión clásica $\neg(A \lor B)$ con la forma de De Morgan $(\neg A \land \neg B)$. 
+            La tabla de verdad interactiva resaltará la fila activa, demostrando que ambas entregan siempre el mismo valor de verdad.
+          </p>
+        </div>
+      )
+    },
+    {
+      title: "Paso 3: Teoría de Conjuntos y Diagrama de Venn",
+      icon: <Users className="w-5 h-5 text-teal-400" />,
+      content: (
+        <div className="space-y-2 text-xs text-slate-300">
+          <p>
+            En la Sección 2 interactuarás con el diagrama vectorial de Venn:
+          </p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><strong>Unión ($A \cup B$):</strong> Usuarios autorizados por rol o por clave.</li>
+            <li><strong>Intersección ($A \cap B$):</strong> Administradores de confianza máxima con clave.</li>
+            <li><strong>Diferencia ($A \setminus B$):</strong> Administradores en contingencia sin clave.</li>
+            <li><strong>Complemento ($(A \cup B)^c$):</strong> Tráfico no autorizado y bots.</li>
+          </ul>
+          <p>
+            Haz clic en cada botón para ver qué regiones se iluminan y qué usuarios cumplen la propiedad.
+          </p>
+        </div>
+      )
+    },
+    {
+      title: "Paso 4: Envío y Registro en el Servidor",
+      icon: <Award className="w-5 h-5 text-emerald-400" />,
+      content: (
+        <div className="space-y-2 text-xs text-slate-300">
+          <p>
+            Una vez que hayas completado tus pruebas y explorado los conceptos matemáticos:
+          </p>
+          <p>
+            Presiona el botón <strong>"Enviar Solución del Reto"</strong> al final de la página. El sistema registrará tu calificación 
+            perfecta ($100/100$) en la base de datos SQLite de TortuMath, sumará <strong>+50 TortuPuntos</strong> a tu perfil e incrementará tu racha de estudio diaria.
+          </p>
+        </div>
+      )
+    }
+  ];
+
   return (
     <div className={`min-h-screen ${themeStyles.bgMain} transition-colors duration-300 font-sans pb-16`}>
       {/* Toast Notification Float */}
@@ -315,6 +418,91 @@ export default function RetoCapitulo1({
               <p className="text-xs text-slate-300 mt-0.5">{toastMessage.text}</p>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Interactive Didactic Tutorial Modal */}
+      <AnimatePresence>
+        {tutorialModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="w-full max-w-xl bg-neutral-950 border border-emerald-500/30 rounded-2xl p-6 shadow-2xl space-y-5 text-white relative"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <BookOpen className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-sm text-white">Guía de Aprendizaje e Instrucciones</h3>
+                    <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Paso {tutorialStep + 1} de {tutorialSteps.length}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setTutorialModalOpen(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Step Title & Icon */}
+              <div className="flex items-center gap-2.5">
+                {tutorialSteps[tutorialStep].icon}
+                <h4 className="font-bold text-base text-emerald-300">{tutorialSteps[tutorialStep].title}</h4>
+              </div>
+
+              {/* Step Content */}
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                {tutorialSteps[tutorialStep].content}
+              </div>
+
+              {/* Pagination indicators and actions */}
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center gap-1.5">
+                  {tutorialSteps.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setTutorialStep(idx)}
+                      className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                        tutorialStep === idx ? "w-6 bg-emerald-400" : "w-2 bg-slate-700 hover:bg-slate-500"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {tutorialStep > 0 && (
+                    <button
+                      onClick={() => setTutorialStep(prev => prev - 1)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      Anterior
+                    </button>
+                  )}
+                  {tutorialStep < tutorialSteps.length - 1 ? (
+                    <button
+                      onClick={() => setTutorialStep(prev => prev + 1)}
+                      className="px-4 py-1.5 rounded-lg text-xs font-black text-black bg-emerald-400 hover:bg-emerald-300 transition-colors cursor-pointer"
+                    >
+                      Siguiente
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setTutorialModalOpen(false)}
+                      className="px-4 py-1.5 rounded-lg text-xs font-black text-black bg-emerald-400 hover:bg-emerald-300 transition-colors cursor-pointer"
+                    >
+                      ¡Comenzar Reto!
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -341,12 +529,24 @@ export default function RetoCapitulo1({
           </div>
         </div>
 
-        {/* Central Badge for QR Scanner */}
-        <div className="flex items-center gap-2">
-          <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${themeStyles.badgeClass} shadow-sm`}>
+        {/* Central Badges & Tutorial Trigger */}
+        <div className="flex items-center gap-3">
+          <span className={`hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold ${themeStyles.badgeClass} shadow-sm`}>
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
             <span>Reto del Libro de Texto — Capítulo 1</span>
           </span>
+
+          <button
+            onClick={() => {
+              setTutorialStep(0);
+              setTutorialModalOpen(true);
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 hover:scale-105 transition-all shadow-sm cursor-pointer"
+            title="Abrir Tutorial y Guía Didáctica"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
+            <span>Guía Tutorial</span>
+          </button>
         </div>
 
         {/* Theme Picker with Logos/Icons */}
@@ -420,7 +620,7 @@ export default function RetoCapitulo1({
               y explora <strong>operaciones de conjuntos</strong> en diagramas vectoriales de Venn.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-slate-300">
+            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-slate-300">
               <div className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-lg border border-white/5">
                 <UserCheck className="w-4 h-4 text-emerald-400" />
                 <span>Estudiante: <strong>{studentName}</strong> ({studentId})</span>
@@ -429,6 +629,15 @@ export default function RetoCapitulo1({
                 <Binary className="w-4 h-4 text-cyan-400" />
                 <span>Lógica Proposicional & Álgebra Booleana</span>
               </div>
+              <button
+                onClick={() => {
+                  setTutorialStep(0);
+                  setTutorialModalOpen(true);
+                }}
+                className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-bold underline cursor-pointer"
+              >
+                <HelpCircle className="w-3.5 h-3.5" /> ¿Cómo resolver este reto? Ver Tutorial
+              </button>
             </div>
           </div>
 
@@ -436,6 +645,26 @@ export default function RetoCapitulo1({
             <Binary className="w-80 h-80 text-white" />
           </div>
         </motion.div>
+
+        {/* Global Quick Onboarding Strip */}
+        <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-amber-500/10 border border-emerald-500/30 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-slate-300">
+          <div className="flex items-start md:items-center gap-2.5">
+            <Lightbulb className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5 md:mt-0" />
+            <div>
+              <strong className="text-white block font-bold">Ruta Pedagógica Rápida:</strong>
+              <span>1. Modela el riesgo con los sliders → 2. Prueba los switches booleanos en la tabla de verdad → 3. Filtra usuarios en el diagrama de Venn → 4. Envía tu solución.</span>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setTutorialStep(0);
+              setTutorialModalOpen(true);
+            }}
+            className="px-3 py-1.5 rounded-lg bg-emerald-500 text-black font-extrabold hover:bg-emerald-400 transition-colors flex-shrink-0 cursor-pointer"
+          >
+            Abrir Guía Completa
+          </button>
+        </div>
 
         {/* Section 2: Simulador Interactivo en Tiempo Real (Física y Lógica del Servidor) */}
         <section className="space-y-4">
@@ -467,9 +696,22 @@ export default function RetoCapitulo1({
             
             {/* Left Column: Sliders and Switches (Controls) */}
             <div className={`lg:col-span-6 p-6 rounded-2xl ${themeStyles.bgCard} space-y-6`}>
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-700/60 pb-3">
-                <Zap className="w-4 h-4 text-amber-400" /> Parámetros de Entrada del Servidor
-              </h4>
+              <div className="flex items-center justify-between border-b border-slate-700/60 pb-3">
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-amber-400" /> Parámetros de Entrada del Servidor
+                </h4>
+                <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  Variables Independientes
+                </span>
+              </div>
+
+              {/* Didactic Callout for Step 1 */}
+              <div className="p-3 rounded-xl bg-cyan-950/20 border border-cyan-500/30 text-[11px] text-cyan-200 flex items-start gap-2">
+                <Info className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                <span>
+                  <strong>Consejo Educativo:</strong> Mueve el CPU por encima del 70% o incrementa los intentos a más de 3. Observa cómo el indicador calcula $R(c, i)$ y activa el Modo Seguro al superar los 50 puntos.
+                </span>
+              </div>
 
               {/* Slider 1: CPU Usage */}
               <div className="space-y-2">
@@ -525,9 +767,12 @@ export default function RetoCapitulo1({
 
               {/* Boolean Switches: es_admin and tiene_clave_valida */}
               <div className="pt-2 border-t border-slate-700/60 space-y-3">
-                <span className="text-xs font-bold text-slate-300 block">
-                  Proposiciones Booleanas de Acceso:
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-300 block">
+                    Proposiciones Booleanas de Acceso:
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-mono">Variables Lógicas</span>
+                </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Switch 1: es_admin ($A$) */}
@@ -796,6 +1041,15 @@ export default function RetoCapitulo1({
                 Complemento ($(A \cup B)^c$)
               </button>
             </div>
+          </div>
+
+          {/* Didactic Callout for Step 3 */}
+          <div className="p-3 rounded-xl bg-teal-950/20 border border-teal-500/30 text-[11px] text-teal-200 flex items-start gap-2">
+            <Info className="w-4 h-4 text-teal-400 flex-shrink-0 mt-0.5" />
+            <span>
+              <strong>Guía Didáctica de Conjuntos:</strong> Cada usuario está ubicado en la región geométrica que le corresponde según sus atributos. 
+              Selecciona <em>Intersección</em> para ver quiénes cumplen ambas condiciones simultáneamente ($A \land B$), o <em>Diferencia</em> para ver administradores sin clave ($A \land \neg B$).
+            </span>
           </div>
 
           {/* Venn Diagram Visualizer Grid */}
