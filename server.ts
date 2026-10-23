@@ -60,6 +60,256 @@ function hashPassword(password: string): string {
   return crypto.createHash("sha256").update(password).digest("hex");
 }
 
+const initialStudents = [
+  {
+    id: "STU-001",
+    name: "Sofía Ramos Ortiz",
+    phone: "71234567",
+    email: "sofia.ramos@gmail.com",
+    subject: "Matemáticas Avanzadas",
+    plan: "Plan TortuMath Semanal",
+    schedule: "Lunes, Miércoles, Viernes - Turno Tarde (14:30 - 17:30)",
+    meetLink: "https://meet.google.com/abc-defg-hij",
+    paymentVerified: 1,
+    registrationDate: "2026-05-28",
+    amount: 195
+  },
+  {
+    id: "STU-002",
+    name: "Mateo Ignacio Flores",
+    phone: "68912345",
+    email: "mateo.flores@unifranz.edu.bo",
+    subject: "Física Académica",
+    plan: "Plan TortuPhysics Semanal",
+    schedule: "Martes, Jueves, Sábado - Turno Mañana (09:00 - 12:00)",
+    meetLink: "https://meet.google.com/xyz-pqrs-tuv",
+    paymentVerified: 0,
+    registrationDate: "2026-05-29",
+    amount: 210
+  },
+  {
+    id: "STU-003",
+    name: "Isabella Méndez",
+    phone: "73549210",
+    email: "isa.mendez@outlook.com",
+    subject: "Programación Inicial",
+    plan: "Plan TortuCode Semanal",
+    schedule: "Lunes, Miércoles, Viernes - Turno Noche (18:30 - 21:30)",
+    meetLink: "https://meet.google.com/mno-klmn-opq",
+    paymentVerified: 1,
+    registrationDate: "2026-05-30",
+    amount: 240
+  },
+  {
+    id: "STU-004",
+    name: "Lucas Andrés Ortiz",
+    phone: "62345178",
+    email: "lucas.ortiz@gmail.com",
+    subject: "Robótica / Scratch",
+    plan: "1 Hora de Tutoría Individual",
+    schedule: "Sábado - Turno Tarde (14:30 - 17:30)",
+    meetLink: "https://meet.google.com/def-ghij-klm",
+    paymentVerified: 0,
+    registrationDate: "2026-05-30",
+    amount: 65
+  },
+  {
+    id: "STU-005",
+    name: "Joaquín Siles Mercado",
+    phone: "74321987",
+    email: "joaco.siles@unifranz.edu.bo",
+    subject: "Electrónica Aplicada",
+    plan: "Plan TortuProject Quincenal",
+    schedule: "Martes, Jueves - Turno Tarde (15:00 - 18:00)",
+    meetLink: "https://meet.google.com/rst-uvwx-yza",
+    paymentVerified: 1,
+    registrationDate: "2026-06-01",
+    amount: 180
+  }
+];
+
+const initialMaterials = [
+  {
+    id: "MAT-1",
+    studentId: "STU-001",
+    title: "Guía de Matrices y Determinantes Grado 2",
+    type: "Guía de Ejercicios (PDF)",
+    instructions: "Resolver los primeros 5 ejercicios prácticos utilizando el método de cofactores.",
+    assignedAt: "2026-06-25",
+    status: "pendiente",
+    score: null,
+    maxScore: null,
+    observation: null
+  },
+  {
+    id: "MAT-2",
+    studentId: "STU-001",
+    title: "Mini Reto de Álgebra Lineal",
+    type: "Mini-Prueba Interactiva",
+    instructions: "Completar la autoevaluación interactiva de determinantes 2x2.",
+    assignedAt: "2026-06-28",
+    status: "realizando",
+    score: null,
+    maxScore: null,
+    observation: null
+  },
+  {
+    id: "MAT-3",
+    studentId: "STU-002",
+    title: "Problemas de MRUV y Caída Libre",
+    type: "Tarea para el Cuaderno",
+    instructions: "Resolver los problemas de la página 4 y subir fotografía de las resoluciones manuscritas.",
+    assignedAt: "2026-06-29",
+    status: "entregado",
+    score: null,
+    maxScore: null,
+    observation: null
+  },
+  {
+    id: "MAT-4",
+    studentId: "STU-003",
+    title: "Autoevaluación de Bucles Python",
+    type: "Mini-Prueba Interactiva",
+    instructions: "Resolver las preguntas sobre for/while anidados.",
+    assignedAt: "2026-07-01",
+    status: "calificado",
+    score: 100,
+    maxScore: 100,
+    observation: "Lógica de control impecable. La estructura for anidada genera la pirámide de estrellas correctamente."
+  }
+];
+
+const initialSubmissions = [
+  {
+    id: "SUB-101",
+    studentId: "STU-001",
+    title: "Práctica de Despejes algebraicos",
+    subject: "Matemáticas",
+    submittedAt: "2026-06-30 14:15",
+    status: "pendiente",
+    observation: null,
+    notebookContent: JSON.stringify([
+      "Sofía Ramos Ortiz - 5to de Secundaria",
+      "Tema: Despejes y Ecuaciones Cuadráticas",
+      "--------------------------------------------------",
+      "Ejercicio 1: x² - 5x + 6 = 0",
+      "  Fórmula: x = [-b ± √(b² - 4ac)] / 2a",
+      "  Reemplazo: x = [5 ± √(25 - 24)] / 2",
+      "  x = [5 ± 1] / 2",
+      "  x1 = 3  (Correcto)",
+      "  x2 = 2  (Correcto)",
+      "",
+      "Ejercicio 2: 2x² - 8 = 0",
+      "  2x² = 8   =>   x² = 4",
+      "  x = √4   =>   x = 2 (Olvidé la solución negativa x=-2)"
+    ])
+  },
+  {
+    id: "SUB-102",
+    studentId: "STU-002",
+    title: "Diagrama de Caída Libre con Rozamiento",
+    subject: "Física",
+    submittedAt: "2026-07-01 11:30",
+    status: "pendiente",
+    observation: null,
+    notebookContent: JSON.stringify([
+      "Mateo Flores - Física Avanzada",
+      "Tema: Lanzamiento de proyectil con ángulo",
+      "--------------------------------------------------",
+      "Lanzamiento inicial: v0 = 20 m/s a 30°",
+      "  vox = v0 * cos(30) = 20 * 0.866 = 17.32 m/s",
+      "  voy = v0 * sin(30) = 20 * 0.50 = 10.0 m/s",
+      "  Tiempo subida: t = voy / g = 10 / 9.8 = 1.02 s",
+      "  Altura máx: h = voy * t - 0.5 * g * t²",
+      "  h = 10 * 1.02 - 4.9 * (1.02)² = 5.10 metros",
+      "  (Se grafica el vector fuerza con fricción opuesta)"
+    ])
+  },
+  {
+    id: "SUB-103",
+    studentId: "STU-003",
+    title: "Algoritmo de Bucles Anidados",
+    subject: "Programación",
+    submittedAt: "2026-07-01 18:45",
+    status: "aprobado",
+    observation: "Lógica de control impecable. La estructura for anidada genera la pirámide de estrellas correctamente.",
+    notebookContent: JSON.stringify([
+      "Isabella Méndez - TortuCode",
+      "Tema: Bucles en Python",
+      "--------------------------------------------------",
+      "for i in range(1, 4):",
+      "    for j in range(1, i + 1):",
+      "        print('*', end='')",
+      "    print()",
+      "",
+      "Resultado visual:",
+      " *",
+      " **",
+      " ***",
+      "Desarrollado en cuaderno para entender traza de memoria."
+    ])
+  }
+];
+
+const initialQuizLogs = [
+  { id: "Q-1", studentId: "STU-001", quizTitle: "Ecuaciones Cuadráticas Básicas", score: 100, maxScore: 100, date: "2026-06-29", status: "aprobado" },
+  { id: "Q-2", studentId: "STU-002", quizTitle: "Cinemática y Vectores", score: 75, maxScore: 100, date: "2026-06-30", status: "aprobado" },
+  { id: "Q-3", studentId: "STU-003", quizTitle: "Ecuaciones Cuadráticas Básicas", score: 100, maxScore: 100, date: "2026-07-01", status: "aprobado" },
+  { id: "Q-4", studentId: "STU-004", quizTitle: "Despejes Simples Álgebra", score: 50, maxScore: 100, date: "2026-07-02", status: "repaso" },
+  { id: "Q-5", studentId: "STU-005", quizTitle: "Circuitos en Serie y Paralelo", score: 85, maxScore: 100, date: "2026-07-02", status: "aprobado" }
+];
+
+async function seedDatabaseData() {
+  const adminHash = hashPassword("admin123");
+  await dbRun("INSERT OR IGNORE INTO users (email, password_hash, role) VALUES (?, ?, ?)", ["admin@tortumath.com", adminHash, "admin"]);
+
+  const studentHash = hashPassword("student123");
+  for (const student of initialStudents) {
+    await dbRun("INSERT OR IGNORE INTO users (email, password_hash, role) VALUES (?, ?, ?)", [student.email, studentHash, "student"]);
+
+    const user = await dbGet<UserRow>("SELECT * FROM users WHERE email = ?", [student.email]);
+    if (!user) continue;
+
+    await dbRun(`
+      INSERT OR IGNORE INTO students (id, user_id, name, phone, subject, plan, schedule, meet_link, payment_verified, registration_date, amount)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [
+      student.id,
+      user.id,
+      student.name,
+      student.phone,
+      student.subject,
+      student.plan,
+      student.schedule,
+      student.meetLink,
+      student.paymentVerified,
+      student.registrationDate,
+      student.amount
+    ]);
+  }
+
+  for (const mat of initialMaterials) {
+    await dbRun(`
+      INSERT OR IGNORE INTO materials (id, student_id, title, type, instructions, assigned_at, status, score, max_score, observation)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, [mat.id, mat.studentId, mat.title, mat.type, mat.instructions, mat.assignedAt, mat.status, mat.score, mat.maxScore, mat.observation]);
+  }
+
+  for (const sub of initialSubmissions) {
+    await dbRun(`
+      INSERT OR IGNORE INTO submissions (id, student_id, title, subject, submitted_at, status, observation, notebook_content)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [sub.id, sub.studentId, sub.title, sub.subject, sub.submittedAt, sub.status, sub.observation, sub.notebookContent]);
+  }
+
+  for (const q of initialQuizLogs) {
+    await dbRun(`
+      INSERT OR IGNORE INTO quiz_logs (id, student_id, quiz_title, score, max_score, date, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `, [q.id, q.studentId, q.quizTitle, q.score, q.maxScore, q.date, q.status]);
+  }
+}
+
 // Database Seeding and Setup
 async function setupDatabase() {
   // Create tables
@@ -136,266 +386,7 @@ async function setupDatabase() {
     )
   `);
 
-  // Seed Users
-  const userCount = await dbGet<CountRow>("SELECT COUNT(*) as count FROM users");
-  if (userCount && userCount.count === 0) {
-    console.log("Seeding initial database entries...");
-
-    // Create Admin
-    const adminHash = hashPassword("admin123");
-    await dbRun("INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)", ["admin@tortumath.com", adminHash, "admin"]);
-
-    // Create Student Users and Students
-    const initialStudents = [
-      {
-        id: "STU-001",
-        name: "Sofía Ramos Ortiz",
-        phone: "71234567",
-        email: "sofia.ramos@gmail.com",
-        subject: "Matemáticas Avanzadas",
-        plan: "Plan TortuMath Semanal",
-        schedule: "Lunes, Miércoles, Viernes - Turno Tarde (14:30 - 17:30)",
-        meetLink: "https://meet.google.com/abc-defg-hij",
-        paymentVerified: 1,
-        registrationDate: "2026-05-28",
-        amount: 195
-      },
-      {
-        id: "STU-002",
-        name: "Mateo Ignacio Flores",
-        phone: "68912345",
-        email: "mateo.flores@unifranz.edu.bo",
-        subject: "Física Académica",
-        plan: "Plan TortuPhysics Semanal",
-        schedule: "Martes, Jueves, Sábado - Turno Mañana (09:00 - 12:00)",
-        meetLink: "https://meet.google.com/xyz-pqrs-tuv",
-        paymentVerified: 0,
-        registrationDate: "2026-05-29",
-        amount: 210
-      },
-      {
-        id: "STU-003",
-        name: "Isabella Méndez",
-        phone: "73549210",
-        email: "isa.mendez@outlook.com",
-        subject: "Programación Inicial",
-        plan: "Plan TortuCode Semanal",
-        schedule: "Lunes, Miércoles, Viernes - Turno Noche (18:30 - 21:30)",
-        meetLink: "https://meet.google.com/mno-klmn-opq",
-        paymentVerified: 1,
-        registrationDate: "2026-05-30",
-        amount: 240
-      },
-      {
-        id: "STU-004",
-        name: "Lucas Andrés Ortiz",
-        phone: "62345178",
-        email: "lucas.ortiz@gmail.com",
-        subject: "Robótica / Scratch",
-        plan: "1 Hora de Tutoría Individual",
-        schedule: "Sábado - Turno Tarde (14:30 - 17:30)",
-        meetLink: "https://meet.google.com/def-ghij-klm",
-        paymentVerified: 0,
-        registrationDate: "2026-05-30",
-        amount: 65
-      },
-      {
-        id: "STU-005",
-        name: "Joaquín Siles Mercado",
-        phone: "74321987",
-        email: "joaco.siles@unifranz.edu.bo",
-        subject: "Electrónica Aplicada",
-        plan: "Plan TortuProject Quincenal",
-        schedule: "Martes, Jueves - Turno Tarde (15:00 - 18:00)",
-        meetLink: "https://meet.google.com/rst-uvwx-yza",
-        paymentVerified: 1,
-        registrationDate: "2026-06-01",
-        amount: 180
-      }
-    ];
-
-    const studentHash = hashPassword("student123");
-
-    for (const student of initialStudents) {
-      await dbRun("INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)", [student.email, studentHash, "student"]);
-      const addedUser = await dbGet<UserRow>("SELECT * FROM users WHERE email = ?", [student.email]);
-      if (addedUser) {
-        await dbRun(`
-          INSERT INTO students (id, user_id, name, phone, subject, plan, schedule, meet_link, payment_verified, registration_date, amount)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [
-          student.id,
-          addedUser.id,
-          student.name,
-          student.phone,
-          student.subject,
-          student.plan,
-          student.schedule,
-          student.meetLink,
-          student.paymentVerified,
-          student.registrationDate,
-          student.amount
-        ]);
-      }
-    }
-
-    // Seed Materials
-    const initialMaterials = [
-      {
-        id: "MAT-1",
-        studentId: "STU-001",
-        title: "Guía de Matrices y Determinantes Grado 2",
-        type: "Guía de Ejercicios (PDF)",
-        instructions: "Resolver los primeros 5 ejercicios prácticos utilizando el método de cofactores.",
-        assignedAt: "2026-06-25",
-        status: "pendiente",
-        score: null,
-        maxScore: null,
-        observation: null
-      },
-      {
-        id: "MAT-2",
-        studentId: "STU-001",
-        title: "Mini Reto de Álgebra Lineal",
-        type: "Mini-Prueba Interactiva",
-        instructions: "Completar la autoevaluación interactiva de determinantes 2x2.",
-        assignedAt: "2026-06-28",
-        status: "realizando",
-        score: null,
-        maxScore: null,
-        observation: null
-      },
-      {
-        id: "MAT-3",
-        studentId: "STU-002",
-        title: "Problemas de MRUV y Caída Libre",
-        type: "Tarea para el Cuaderno",
-        instructions: "Resolver los problemas de la página 4 y subir fotografía de las resoluciones manuscritas.",
-        assignedAt: "2026-06-29",
-        status: "entregado",
-        score: null,
-        maxScore: null,
-        observation: null
-      },
-      {
-        id: "MAT-4",
-        studentId: "STU-003",
-        title: "Autoevaluación de Bucles Python",
-        type: "Mini-Prueba Interactiva",
-        instructions: "Resolver las preguntas sobre for/while anidados.",
-        assignedAt: "2026-07-01",
-        status: "calificado",
-        score: 100,
-        maxScore: 100,
-        observation: "Lógica de control impecable. La estructura for anidada genera la pirámide de estrellas correctamente."
-      }
-    ];
-
-    for (const mat of initialMaterials) {
-      await dbRun(`
-        INSERT INTO materials (id, student_id, title, type, instructions, assigned_at, status, score, max_score, observation)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [mat.id, mat.studentId, mat.title, mat.type, mat.instructions, mat.assignedAt, mat.status, mat.score, mat.maxScore, mat.observation]);
-    }
-
-    // Seed Submissions
-    const initialSubmissions = [
-      {
-        id: "SUB-101",
-        studentId: "STU-001",
-        title: "Práctica de Despejes algebraicos",
-        subject: "Matemáticas",
-        submittedAt: "2026-06-30 14:15",
-        status: "pendiente",
-        observation: null,
-        notebookContent: JSON.stringify([
-          "Sofía Ramos Ortiz - 5to de Secundaria",
-          "Tema: Despejes y Ecuaciones Cuadráticas",
-          "--------------------------------------------------",
-          "Ejercicio 1: x² - 5x + 6 = 0",
-          "  Fórmula: x = [-b ± √(b² - 4ac)] / 2a",
-          "  Reemplazo: x = [5 ± √(25 - 24)] / 2",
-          "  x = [5 ± 1] / 2",
-          "  x1 = 3  (Correcto)",
-          "  x2 = 2  (Correcto)",
-          "",
-          "Ejercicio 2: 2x² - 8 = 0",
-          "  2x² = 8   =>   x² = 4",
-          "  x = √4   =>   x = 2 (Olvidé la solución negativa x=-2)"
-        ])
-      },
-      {
-        id: "SUB-102",
-        studentId: "STU-002",
-        title: "Diagrama de Caída Libre con Rozamiento",
-        subject: "Física",
-        submittedAt: "2026-07-01 11:30",
-        status: "pendiente",
-        observation: null,
-        notebookContent: JSON.stringify([
-          "Mateo Flores - Física Avanzada",
-          "Tema: Lanzamiento de proyectil con ángulo",
-          "--------------------------------------------------",
-          "Lanzamiento inicial: v0 = 20 m/s a 30°",
-          "  vox = v0 * cos(30) = 20 * 0.866 = 17.32 m/s",
-          "  voy = v0 * sin(30) = 20 * 0.50 = 10.0 m/s",
-          "  Tiempo subida: t = voy / g = 10 / 9.8 = 1.02 s",
-          "  Altura máx: h = voy * t - 0.5 * g * t²",
-          "  h = 10 * 1.02 - 4.9 * (1.02)² = 5.10 metros",
-          "  (Se grafica el vector fuerza con fricción opuesta)"
-        ])
-      },
-      {
-        id: "SUB-103",
-        studentId: "STU-003",
-        title: "Algoritmo de Bucles Anidados",
-        subject: "Programación",
-        submittedAt: "2026-07-01 18:45",
-        status: "aprobado",
-        observation: "Lógica de control impecable. La estructura for anidada genera la pirámide de estrellas correctamente.",
-        notebookContent: JSON.stringify([
-          "Isabella Méndez - TortuCode",
-          "Tema: Bucles en Python",
-          "--------------------------------------------------",
-          "for i in range(1, 4):",
-          "    for j in range(1, i + 1):",
-          "        print('*', end='')",
-          "    print()",
-          "",
-          "Resultado visual:",
-          " *",
-          " **",
-          " ***",
-          "Desarrollado en cuaderno para entender traza de memoria."
-        ])
-      }
-    ];
-
-    for (const sub of initialSubmissions) {
-      await dbRun(`
-        INSERT INTO submissions (id, student_id, title, subject, submitted_at, status, observation, notebook_content)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `, [sub.id, sub.studentId, sub.title, sub.subject, sub.submittedAt, sub.status, sub.observation, sub.notebookContent]);
-    }
-
-    // Seed Quiz Logs
-    const initialQuizLogs = [
-      { id: "Q-1", studentId: "STU-001", quizTitle: "Ecuaciones Cuadráticas Básicas", score: 100, maxScore: 100, date: "2026-06-29", status: "aprobado" },
-      { id: "Q-2", studentId: "STU-002", quizTitle: "Cinemática y Vectores", score: 75, maxScore: 100, date: "2026-06-30", status: "aprobado" },
-      { id: "Q-3", studentId: "STU-003", quizTitle: "Ecuaciones Cuadráticas Básicas", score: 100, maxScore: 100, date: "2026-07-01", status: "aprobado" },
-      { id: "Q-4", studentId: "STU-004", quizTitle: "Despejes Simples Álgebra", score: 50, maxScore: 100, date: "2026-07-02", status: "repaso" },
-      { id: "Q-5", studentId: "STU-005", quizTitle: "Circuitos en Serie y Paralelo", score: 85, maxScore: 100, date: "2026-07-02", status: "aprobado" }
-    ];
-
-    for (const q of initialQuizLogs) {
-      await dbRun(`
-        INSERT INTO quiz_logs (id, student_id, quiz_title, score, max_score, date, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-      `, [q.id, q.studentId, q.quizTitle, q.score, q.maxScore, q.date, q.status]);
-    }
-
-    console.log("Database seeded successfully.");
-  }
+  await seedDatabaseData();
 }
 
 // REST APIs
@@ -765,6 +756,22 @@ app.post("/api/quizzes", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Alias for /api/quiz_logs requested for textbook integration
+app.post("/api/quiz_logs", async (req, res) => {
+  const { id, studentId, quizTitle, score, maxScore, date, status } = req.body;
+  try {
+    await dbRun(`
+      INSERT INTO quiz_logs (id, student_id, quiz_title, score, max_score, date, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `, [id, studentId, quizTitle, score, maxScore, date, status]);
+    const created = await dbGet("SELECT * FROM quiz_logs WHERE id = ?", [id]);
+    res.status(201).json(created);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // Setup DB and start server
 setupDatabase().then(() => {

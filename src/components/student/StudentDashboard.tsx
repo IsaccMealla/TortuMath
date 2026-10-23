@@ -41,6 +41,7 @@ interface StudentDashboardProps {
   setSubmissions: React.Dispatch<React.SetStateAction<any[]>>;
   quizScores: any[];
   setQuizScores: React.Dispatch<React.SetStateAction<any[]>>;
+  onOpenRetoBook?: () => void;
 }
 
 export default function StudentDashboard({
@@ -54,7 +55,9 @@ export default function StudentDashboard({
   setSubmissions,
   quizScores,
   setQuizScores,
+  onOpenRetoBook,
 }: StudentDashboardProps) {
+
   const [activeTab, setActiveTab] = useState<"inicio" | "horario" | "materiales" | "laboratorio" | "pagos" | "configuracion">("inicio");
   const [completedLessons, setCompletedLessons] = useState<number>(3);
   const [theme, setTheme] = useState<"tortuga" | "matrix" | "cyber">(() => {
@@ -534,6 +537,22 @@ export default function StudentDashboard({
               </div>
               <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activeTab === "configuracion" ? "rotate-90 text-emerald-400" : "text-slate-500"}`} />
             </button>
+
+            {/* Acceso Directo al Reto del Libro de Texto (QR) */}
+            <div className="pt-2">
+              <button
+                onClick={() => onOpenRetoBook ? onOpenRetoBook() : window.location.assign("#/retos/capitulo-1")}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-black transition-all cursor-pointer bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <BookOpen className="w-4 h-4 text-amber-400 group-hover:rotate-6 transition-transform" />
+                  <span className="truncate">Reto Libro (Cap. 1)</span>
+                </div>
+                <span className="text-[10px] bg-amber-500 text-black px-1.5 py-0.5 rounded font-black tracking-wider uppercase">
+                  QR
+                </span>
+              </button>
+            </div>
           </nav>
         </div>
 

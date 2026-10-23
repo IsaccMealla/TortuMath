@@ -75,7 +75,17 @@ export default function Navbar({ onOpenLogin }: NavbarProps) {
         </nav>
 
         {/* Action Button Block */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
+          {/* Quick link for QR Textbook Challenge */}
+          <a
+            href="#/retos/capitulo-1"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 hover:scale-105 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+            title="Escaneo QR del Libro Impreso"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            <span>📖 Reto Libro QR</span>
+          </a>
+
           {/* Secondary phone link */}
           <a
             href="https://wa.me/59170000000"
@@ -95,6 +105,7 @@ export default function Navbar({ onOpenLogin }: NavbarProps) {
             <LogIn className="w-3.5 h-3.5" />
             <span>Iniciar Sesión</span>
           </button>
+
 
           <button
             type="button"

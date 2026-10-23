@@ -10,6 +10,7 @@ import Footer from "./components/shared/Footer";
 import LoginModal from "./components/shared/LoginModal";
 import StudentDashboard from "./components/student/StudentDashboard";
 import AdminDashboard from "./components/admin/AdminDashboard";
+import RetoCapitulo1 from "./components/student/RetoCapitulo1";
 
 import { StudentRegistration, AssignedMaterial, HomeworkSubmission, QuizLog } from "./types";
 
@@ -19,8 +20,41 @@ export default function App() {
   const [user, setUser] = useState<{ email: string } | null>(null);
   const [role, setRole] = useState<"student" | "admin" | null>(null);
 
+  // Routing state for QR code textbook challenges
+  const [currentRoute, setCurrentRoute] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      const search = window.location.search;
+      if (path.includes("capitulo-1") || hash.includes("capitulo-1") || search.includes("capitulo-1")) {
+        return "/retos/capitulo-1";
+      }
+    }
+    return "/";
+  });
+
+  useEffect(() => {
+    const handleRouteCheck = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      const search = window.location.search;
+      if (path.includes("capitulo-1") || hash.includes("capitulo-1") || search.includes("capitulo-1")) {
+        setCurrentRoute("/retos/capitulo-1");
+      } else {
+        setCurrentRoute("/");
+      }
+    };
+    window.addEventListener("popstate", handleRouteCheck);
+    window.addEventListener("hashchange", handleRouteCheck);
+    return () => {
+      window.removeEventListener("popstate", handleRouteCheck);
+      window.removeEventListener("hashchange", handleRouteCheck);
+    };
+  }, []);
+
   // Unified global states
   const [students, setStudents] = useState<StudentRegistration[]>([]);
+
   const [assignedMaterials, setAssignedMaterials] = useState<AssignedMaterial[]>([]);
   const [submissions, setSubmissions] = useState<HomeworkSubmission[]>([]);
   const [quizScores, setQuizScores] = useState<QuizLog[]>([]);
@@ -256,6 +290,35 @@ export default function App() {
     localStorage.removeItem("tortumath_role");
   };
 
+  // Priority: If the student scanned the QR code or navigated to the textbook challenge
+  if (currentRoute === "/retos/capitulo-1") {
+    const currentStudent = students.find(s => user && s.email.toLowerCase() === user.email.toLowerCase());
+    return (
+      <RetoCapitulo1
+        onBack={() => {
+          if (window.location.hash.includes("capitulo-1")) {
+            window.location.hash = "";
+          } else {
+            window.history.pushState({}, "", "/");
+          }
+          setCurrentRoute("/");
+        }}
+        userEmail={user?.email || "sofia.ramos@gmail.com"}
+        studentId={currentStudent?.id || "STU-001"}
+        studentName={currentStudent?.name || "Sofía Ramos Ortiz"}
+        onSuccessCompletion={() => {
+          fetch("http://localhost:5000/api/quizzes")
+            .then(res => res.json())
+            .then(data => {
+              setQuizScores(data);
+              lastSyncedQuizScores.current = data;
+            })
+            .catch(() => {});
+        }}
+      />
+    );
+  }
+
   // Conditional Rendering depending on active routing role
   if (user && role === "student") {
     return (
@@ -270,9 +333,14 @@ export default function App() {
         setSubmissions={setSubmissions}
         quizScores={quizScores}
         setQuizScores={setQuizScores}
+        onOpenRetoBook={() => {
+          window.location.hash = "/retos/capitulo-1";
+          setCurrentRoute("/retos/capitulo-1");
+        }}
       />
     );
   }
+
 
   if (user && role === "admin") {
     return (
