@@ -36,9 +36,7 @@ import {
   ChevronRight,
   ChevronLeft,
   Info,
-  Target,
-  ListChecks,
-  Eye
+  Target
 } from "lucide-react";
 import Logo from "../shared/Logo";
 
@@ -539,17 +537,17 @@ export default function RetoCapitulo1({
                   <Sliders className="w-3.5 h-3.5 text-cyan-400" /> Misión 1: Zona Segura
                 </span>
                 {mission1Completed ? (
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center gap-1 font-bold">
                     <Check className="w-3 h-3" /> Cumplida
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px] font-bold">
                     Pendiente
                   </span>
                 )}
               </div>
               <p className="text-[11px] leading-tight text-slate-400">
-                Ajusta los sliders para lograr un riesgo $R(c, i) \le 30$ pts.
+                Ajusta los sliders para lograr un riesgo R(c, i) ≤ 30 pts.
               </p>
             </div>
 
@@ -567,17 +565,17 @@ export default function RetoCapitulo1({
                   <FileCode2 className="w-3.5 h-3.5 text-amber-400" /> Misión 2: Bloqueo De Morgan
                 </span>
                 {mission2Completed ? (
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center gap-1 font-bold">
                     <Check className="w-3 h-3" /> Cumplida
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px] font-bold">
                     Pendiente
                   </span>
                 )}
               </div>
               <p className="text-[11px] leading-tight text-slate-400">
-                Desmarca ambos switches para verificar el caso $(\neg A \land \neg B)$.
+                Desmarca ambos switches para verificar el caso (¬A ∧ ¬B).
               </p>
             </div>
 
@@ -595,17 +593,17 @@ export default function RetoCapitulo1({
                   <Users className="w-3.5 h-3.5 text-teal-400" /> Misión 3: Intersección Venn
                 </span>
                 {mission3Completed ? (
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center gap-1 font-bold">
                     <Check className="w-3 h-3" /> Cumplida
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px] font-bold">
                     Pendiente
                   </span>
                 )}
               </div>
               <p className="text-[11px] leading-tight text-slate-400">
-                Selecciona la operación "Intersección ($A \cap B$)" en el diagrama.
+                Selecciona la operación "Intersección (A ∩ B)" en el diagrama.
               </p>
             </div>
           </div>
@@ -633,9 +631,9 @@ export default function RetoCapitulo1({
             </div>
 
             <ol className="list-decimal list-inside text-xs text-slate-200 space-y-1">
-              <li>Mueve el deslizador de <strong>Carga de Procesador ($c$)</strong> por debajo de 40%.</li>
-              <li>Ajusta los <strong>Intentos Fallidos ($i$)</strong> a 0 o 1 intento.</li>
-              <li>Comprueba que el medidor de riesgo calcule un valor <strong>$R(c, i) \le 30$ pts</strong> (Zona Segura verde).</li>
+              <li>Mueve el deslizador de <strong>Carga de Procesador (c)</strong> por debajo de 40%.</li>
+              <li>Ajusta los <strong>Intentos Fallidos (i)</strong> a 0 o 1 intento.</li>
+              <li>Comprueba que el medidor de riesgo calcule un valor <strong>R(c, i) ≤ 30 pts</strong> (Zona Segura verde).</li>
             </ol>
           </div>
 
@@ -646,7 +644,7 @@ export default function RetoCapitulo1({
                 Estación 1: Panel de Control de Carga y Función de Riesgo
               </h3>
               <p className="text-xs text-slate-400">
-                La función matemática $R(c, i) = 0.5c + 10i$ evalúa la estabilidad operacional del servidor en tiempo real.
+                La función matemática R(c, i) = 0.5 · c + 10 · i evalúa la estabilidad operacional del servidor en tiempo real.
               </p>
             </div>
             
@@ -655,7 +653,7 @@ export default function RetoCapitulo1({
                 setCpuUsage(20);
                 setFailedAttempts(1);
               }}
-              className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 transition-colors cursor-pointer border border-emerald-500/30 self-start sm:self-auto"
+              className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 transition-colors cursor-pointer border border-emerald-500/30 self-start sm:self-auto font-bold"
             >
               <Check className="w-3.5 h-3.5" /> Calibrar en Zona Segura Automáticamente
             </button>
@@ -669,7 +667,7 @@ export default function RetoCapitulo1({
               <div className="space-y-2 p-4 rounded-xl bg-black/40 border border-slate-800">
                 <div className="flex justify-between text-xs">
                   <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                    <Cpu className="w-4 h-4 text-cyan-400" /> Carga de Procesador ($c$):
+                    <Cpu className="w-4 h-4 text-cyan-400" /> Carga de Procesador (c):
                   </span>
                   <span className="font-mono font-black text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/30">
                     {cpuUsage}%
@@ -695,7 +693,7 @@ export default function RetoCapitulo1({
               <div className="space-y-2 p-4 rounded-xl bg-black/40 border border-slate-800">
                 <div className="flex justify-between text-xs">
                   <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                    <AlertTriangle className="w-4 h-4 text-amber-400" /> Intentos Fallidos ($i$):
+                    <AlertTriangle className="w-4 h-4 text-amber-400" /> Intentos Fallidos (i):
                   </span>
                   <span className="font-mono font-black text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
                     {failedAttempts} intentos
@@ -723,10 +721,10 @@ export default function RetoCapitulo1({
                   <Calculator className="w-3.5 h-3.5 text-emerald-400" /> Cálculo Multivariable Activo:
                 </span>
                 <p className="text-white font-bold text-sm">
-                  R(c, i) = 0.5 \cdot c + 10 \cdot i = 0.5({cpuUsage}) + 10({failedAttempts}) = <span className="text-emerald-400 text-base">{riskScore} pts</span>
+                  {"R(c, i) = 0.5 · c + 10 · i = 0.5 · "}{cpuUsage}{" + 10 · "}{failedAttempts}{" = "}<span className="text-emerald-400 text-base">{riskScore} pts</span>
                 </p>
                 <p className="text-[11px] text-slate-400 font-sans">
-                  Regla de Seguridad: Si el riesgo supera los <strong>50 pts</strong>, el servidor bloquea todo acceso y entra en <strong>Modo Seguro</strong>.
+                  Regla de Seguridad: Si el riesgo supera los <strong>50 pts (R &gt; 50)</strong>, el servidor bloquea todo acceso y entra en <strong>Modo Seguro</strong>.
                 </p>
               </div>
             </div>
@@ -822,9 +820,9 @@ export default function RetoCapitulo1({
             </div>
 
             <ol className="list-decimal list-inside text-xs text-slate-200 space-y-1">
-              <li>Desmarca la casilla <strong>Es Administrador ($A$)</strong>.</li>
-              <li>Desmarca la casilla <strong>Clave Válida ($B$)</strong>.</li>
-              <li>Comprueba cómo ambas expresiones lógicas entregan <strong>VERDADERO (Bloquea)</strong> y la tabla de verdad resalta la fila $(0, 0)$.</li>
+              <li>Desmarca la casilla <strong>Es Administrador (A)</strong>.</li>
+              <li>Desmarca la casilla <strong>Posee Clave Válida (B)</strong>.</li>
+              <li>Comprueba cómo ambas expresiones lógicas entregan <strong>VERDADERO (1: Bloquea)</strong> y la tabla de verdad resalta la fila (0, 0).</li>
             </ol>
           </div>
 
@@ -835,7 +833,7 @@ export default function RetoCapitulo1({
                 Estación 2: Evaluador de Lógica Formal y Leyes de De Morgan
               </h3>
               <p className="text-xs text-slate-400">
-                Demostración empírica de la equivalencia fundamental del álgebra booleana: $\neg(A \lor B) \equiv (\neg A \land \neg B)$.
+                Demostración empírica de la equivalencia fundamental del álgebra booleana: ¬(A ∨ B) ≡ (¬A ∧ ¬B).
               </p>
             </div>
             
@@ -844,7 +842,7 @@ export default function RetoCapitulo1({
                 setIsAdmin(false);
                 setHasValidKey(false);
               }}
-              className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 transition-colors cursor-pointer border border-amber-500/30 self-start sm:self-auto"
+              className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 transition-colors cursor-pointer border border-amber-500/30 self-start sm:self-auto font-bold"
             >
               <Check className="w-3.5 h-3.5" /> Simular Caso Bloqueo (0, 0)
             </button>
@@ -858,7 +856,7 @@ export default function RetoCapitulo1({
                   <ShieldCheck className={`w-5 h-5 ${isAdmin ? "text-emerald-400" : "text-slate-500"}`} />
                   <div>
                     <span className="text-sm font-bold text-white block">Es Administrador</span>
-                    <span className="text-xs text-slate-400 font-mono">Proposición $A$ ({isAdmin ? "Verdadero = 1" : "Falso = 0"})</span>
+                    <span className="text-xs text-slate-400 font-mono">Proposición A ({isAdmin ? "Verdadero = 1" : "Falso = 0"})</span>
                   </div>
                 </div>
                 <input
@@ -874,7 +872,7 @@ export default function RetoCapitulo1({
                   <Key className={`w-5 h-5 ${hasValidKey ? "text-cyan-400" : "text-slate-500"}`} />
                   <div>
                     <span className="text-sm font-bold text-white block">Posee Clave Válida</span>
-                    <span className="text-xs text-slate-400 font-mono">Proposición $B$ ({hasValidKey ? "Verdadero = 1" : "Falso = 0"})</span>
+                    <span className="text-xs text-slate-400 font-mono">Proposición B ({hasValidKey ? "Verdadero = 1" : "Falso = 0"})</span>
                   </div>
                 </div>
                 <input
@@ -984,9 +982,9 @@ export default function RetoCapitulo1({
             </div>
 
             <ol className="list-decimal list-inside text-xs text-slate-200 space-y-1">
-              <li>Haz clic en el botón <strong>Intersección ($A \cap B$)</strong> en el selector de operaciones.</li>
+              <li>Haz clic en el botón <strong>Intersección (A ∩ B)</strong> en la barra de operaciones.</li>
               <li>Observa cómo en el diagrama de Venn solo se ilumina la región central de superposición.</li>
-              <li>Verifica que en la tabla de elementos filtrados únicamente figure <strong>Carlos Arce (Root Admin)</strong>.</li>
+              <li>Verifica que en la tabla de elementos filtrados figure únicamente <strong>Carlos Arce (Root Admin)</strong>.</li>
             </ol>
           </div>
 
@@ -997,43 +995,43 @@ export default function RetoCapitulo1({
                 Estación 3: Visualizador Interactivo de Teoría de Conjuntos
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                Representación del Conjunto Universal $U$ (Usuarios del Sistema), $A$ (Administradores) y $B$ (Usuarios con Clave Válida).
+                Representación del Conjunto Universal U (Usuarios del Sistema), A (Administradores) y B (Usuarios con Clave Válida).
               </p>
             </div>
 
-            {/* Operation Selector Buttons with Icons */}
+            {/* Operation Selector Buttons with Clean Unicode Symbols */}
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setSelectedOperation("union")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   selectedOperation === "union" ? themeStyles.buttonActive : "bg-white/5 hover:bg-white/10 text-slate-300"
                 }`}
               >
-                Unión ($A \cup B$)
+                Unión (A ∪ B)
               </button>
               <button
                 onClick={() => setSelectedOperation("intersection")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   selectedOperation === "intersection" ? themeStyles.buttonActive : "bg-white/5 hover:bg-white/10 text-slate-300"
                 }`}
               >
-                Intersección ($A \cap B$)
+                Intersección (A ∩ B)
               </button>
               <button
                 onClick={() => setSelectedOperation("diffA")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   selectedOperation === "diffA" ? themeStyles.buttonActive : "bg-white/5 hover:bg-white/10 text-slate-300"
                 }`}
               >
-                Diferencia ($A \setminus B$)
+                Diferencia (A ∖ B)
               </button>
               <button
                 onClick={() => setSelectedOperation("complement")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   selectedOperation === "complement" ? themeStyles.buttonActive : "bg-white/5 hover:bg-white/10 text-slate-300"
                 }`}
               >
-                Complemento ($(A \cup B)^c$)
+                Complemento (A ∪ B)ᶜ
               </button>
             </div>
           </div>
@@ -1185,13 +1183,13 @@ export default function RetoCapitulo1({
 
               <div className="flex items-center gap-4 text-[11px] text-slate-400 mt-2 font-mono">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Conjunto $A$: Admins ({SAMPLE_USERS.filter(u => u.isAdmin).length})
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Conjunto A: Admins ({SAMPLE_USERS.filter(u => u.isAdmin).length})
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> Conjunto $B$: Con Clave ({SAMPLE_USERS.filter(u => u.hasValidKey).length})
+                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> Conjunto B: Con Clave ({SAMPLE_USERS.filter(u => u.hasValidKey).length})
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Universo $U$ ({SAMPLE_USERS.length})
+                  <span className="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Universo U ({SAMPLE_USERS.length})
                 </span>
               </div>
             </div>
@@ -1244,7 +1242,7 @@ export default function RetoCapitulo1({
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs">
                   <span className="font-bold text-slate-300">Elementos Filtrados ({filteredVennUsers.length}):</span>
-                  <span className="text-slate-400 font-mono text-[11px]">{Math.round((filteredVennUsers.length / SAMPLE_USERS.length) * 100)}% del Universo $U$</span>
+                  <span className="text-slate-400 font-mono text-[11px]">{Math.round((filteredVennUsers.length / SAMPLE_USERS.length) * 100)}% del Universo U</span>
                 </div>
 
                 <div className="space-y-1.5 max-h-[190px] overflow-y-auto pr-1">
@@ -1371,7 +1369,7 @@ export default function RetoCapitulo1({
                   </h4>
                 </div>
                 <p className="text-xs text-slate-300">
-                  {guidedTourStep === 1 && "El recuadro resaltado te indica qué mover para lograr R(c, i) <= 30."}
+                  {guidedTourStep === 1 && "El recuadro resaltado te indica qué mover para lograr R(c, i) ≤ 30."}
                   {guidedTourStep === 2 && "Desmarca los switches para activar la equivalencia de De Morgan."}
                   {guidedTourStep === 3 && "Selecciona Intersección (A ∩ B) para aislar administradores con clave."}
                   {guidedTourStep === 4 && "Presiona 'Enviar Solución' para validar tus +50 TortuPuntos."}
