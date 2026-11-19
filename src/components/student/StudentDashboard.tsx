@@ -565,6 +565,19 @@ export default function StudentDashboard({
                   QR
                 </span>
               </button>
+
+              <button
+                onClick={() => onOpenRetoBook ? onOpenRetoBook(3) : window.location.assign("#/retos/capitulo-3")}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer bg-gradient-to-r from-teal-500/20 to-indigo-500/20 text-teal-300 border border-teal-500/40 hover:border-teal-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(20,184,166,0.2)] group"
+              >
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-3.5 h-3.5 text-teal-400 group-hover:rotate-6 transition-transform" />
+                  <span className="truncate">Reto Libro: Cap. 3</span>
+                </div>
+                <span className="text-[9px] bg-teal-400 text-black px-1.5 py-0.5 rounded font-black tracking-wider uppercase">
+                  QR
+                </span>
+              </button>
             </div>
           </nav>
         </div>
