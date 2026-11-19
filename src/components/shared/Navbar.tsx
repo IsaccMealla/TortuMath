@@ -76,15 +76,37 @@ export default function Navbar({ onOpenLogin }: NavbarProps) {
 
         {/* Action Button Block */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Quick link for QR Textbook Challenge */}
-          <a
-            href="#/retos/capitulo-1"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 hover:scale-105 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)]"
-            title="Escaneo QR del Libro Impreso"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            <span>Reto Libro QR</span>
-          </a>
+          {/* Quick links for QR Textbook Challenges */}
+          <div className="relative group">
+            <button
+              type="button"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer"
+              title="Escaneo QR del Libro Impreso"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+              <span>Retos Libro QR</span>
+            </button>
+            <div className="absolute top-full right-0 mt-1 w-44 bg-slate-900 border border-slate-700/80 rounded-xl shadow-2xl py-1.5 hidden group-hover:block z-50">
+              <a
+                href="#/retos/capitulo-1"
+                className="block px-3 py-2 text-xs font-bold text-slate-200 hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors"
+              >
+                Capítulo 1: Fundamentos
+              </a>
+              <a
+                href="#/retos/capitulo-2"
+                className="block px-3 py-2 text-xs font-bold text-slate-200 hover:bg-cyan-500/20 hover:text-cyan-300 transition-colors"
+              >
+                Capítulo 2: Matemática Discreta
+              </a>
+              <a
+                href="#/retos/capitulo-3"
+                className="block px-3 py-2 text-xs font-bold text-slate-200 hover:bg-teal-500/20 hover:text-teal-300 transition-colors"
+              >
+                Capítulo 3: Álgebra Lineal
+              </a>
+            </div>
+          </div>
 
           {/* Secondary phone link */}
           <a

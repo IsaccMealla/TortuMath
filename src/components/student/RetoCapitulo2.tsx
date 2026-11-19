@@ -1429,3 +1429,4 @@ export default function RetoCapitulo2({
     </div>
   );
 }
+
