@@ -5,9 +5,10 @@ import EnrollmentModal from "./EnrollmentModal";
 
 interface NavbarProps {
   onOpenLogin: () => void;
+  onOpenRetosSidebar?: () => void;
 }
 
-export default function Navbar({ onOpenLogin }: NavbarProps) {
+export default function Navbar({ onOpenLogin, onOpenRetosSidebar }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [enrollmentOpen, setEnrollmentOpen] = useState(false);
@@ -76,37 +77,16 @@ export default function Navbar({ onOpenLogin }: NavbarProps) {
 
         {/* Action Button Block */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Quick links for QR Textbook Challenges */}
-          <div className="relative group">
-            <button
-              type="button"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer"
-              title="Escaneo QR del Libro Impreso"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-              <span>Retos Libro QR</span>
-            </button>
-            <div className="absolute top-full right-0 mt-1 w-44 bg-slate-900 border border-slate-700/80 rounded-xl shadow-2xl py-1.5 hidden group-hover:block z-50">
-              <a
-                href="#/retos/capitulo-1"
-                className="block px-3 py-2 text-xs font-bold text-slate-200 hover:bg-emerald-500/20 hover:text-emerald-300 transition-colors"
-              >
-                Capítulo 1: Fundamentos
-              </a>
-              <a
-                href="#/retos/capitulo-2"
-                className="block px-3 py-2 text-xs font-bold text-slate-200 hover:bg-cyan-500/20 hover:text-cyan-300 transition-colors"
-              >
-                Capítulo 2: Matemática Discreta
-              </a>
-              <a
-                href="#/retos/capitulo-3"
-                className="block px-3 py-2 text-xs font-bold text-slate-200 hover:bg-teal-500/20 hover:text-teal-300 transition-colors"
-              >
-                Capítulo 3: Álgebra Lineal
-              </a>
-            </div>
-          </div>
+          {/* Quick button to open Retos Sidebar for all 4 chapters */}
+          <button
+            type="button"
+            onClick={onOpenRetosSidebar ? onOpenRetosSidebar : () => { window.location.hash = "/retos/capitulo-1"; }}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500/20 via-emerald-500/20 to-cyan-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 hover:scale-105 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer group"
+            title="Abrir panel con los 4 Retos del Libro"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
+            <span>Retos Libro QR (1 al 4)</span>
+          </button>
 
           {/* Secondary phone link */}
           <a
@@ -193,6 +173,17 @@ export default function Navbar({ onOpenLogin }: NavbarProps) {
           </a>
           <hr className="border-white/5 my-2" />
           <div className="flex flex-col gap-3 pt-2">
+            <button
+              onClick={() => {
+                closeMobileMenu();
+                if (onOpenRetosSidebar) onOpenRetosSidebar();
+              }}
+              className="flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 rounded-xl font-bold border border-amber-500/40 text-xs cursor-pointer"
+            >
+              <BookOpen className="w-4 h-4 text-amber-400" />
+              Retos Libro QR (Capítulos 1 al 4)
+            </button>
+
             <a
               href="https://wa.me/59170000000"
               target="_blank"

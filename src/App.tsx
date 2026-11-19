@@ -13,12 +13,15 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import RetoCapitulo1 from "./components/student/RetoCapitulo1";
 import RetoCapitulo2 from "./components/student/RetoCapitulo2";
 import RetoCapitulo3 from "./components/student/RetoCapitulo3";
+import RetoCapitulo4 from "./components/student/RetoCapitulo4";
+import RetosSidebar from "./components/shared/RetosSidebar";
 
 import { StudentRegistration, AssignedMaterial, HomeworkSubmission, QuizLog } from "./types";
 
 
 export default function App() {
   const [loginOpen, setLoginOpen] = useState(false);
+  const [retosSidebarOpen, setRetosSidebarOpen] = useState(false);
   const [user, setUser] = useState<{ email: string } | null>(null);
   const [role, setRole] = useState<"student" | "admin" | null>(null);
 
@@ -28,6 +31,9 @@ export default function App() {
       const path = window.location.pathname;
       const hash = window.location.hash;
       const search = window.location.search;
+      if (path.includes("capitulo-4") || hash.includes("capitulo-4") || search.includes("capitulo-4")) {
+        return "/retos/capitulo-4";
+      }
       if (path.includes("capitulo-3") || hash.includes("capitulo-3") || search.includes("capitulo-3")) {
         return "/retos/capitulo-3";
       }
@@ -46,7 +52,9 @@ export default function App() {
       const path = window.location.pathname;
       const hash = window.location.hash;
       const search = window.location.search;
-      if (path.includes("capitulo-3") || hash.includes("capitulo-3") || search.includes("capitulo-3")) {
+      if (path.includes("capitulo-4") || hash.includes("capitulo-4") || search.includes("capitulo-4")) {
+        setCurrentRoute("/retos/capitulo-4");
+      } else if (path.includes("capitulo-3") || hash.includes("capitulo-3") || search.includes("capitulo-3")) {
         setCurrentRoute("/retos/capitulo-3");
       } else if (path.includes("capitulo-2") || hash.includes("capitulo-2") || search.includes("capitulo-2")) {
         setCurrentRoute("/retos/capitulo-2");
@@ -303,6 +311,34 @@ export default function App() {
   };
 
   // Priority: If the student scanned the QR code or navigated to the textbook challenge
+  if (currentRoute === "/retos/capitulo-4") {
+    const currentStudent = students.find(s => user && s.email.toLowerCase() === user.email.toLowerCase());
+    return (
+      <RetoCapitulo4
+        onBack={() => {
+          if (window.location.hash.includes("capitulo-4")) {
+            window.location.hash = "";
+          } else {
+            window.history.pushState({}, "", "/");
+          }
+          setCurrentRoute("/");
+        }}
+        userEmail={user?.email || "sofia.ramos@gmail.com"}
+        studentId={currentStudent?.id || "STU-001"}
+        studentName={currentStudent?.name || "Sofía Ramos Ortiz"}
+        onSuccessCompletion={() => {
+          fetch("http://localhost:5000/api/quizzes")
+            .then(res => res.json())
+            .then(data => {
+              setQuizScores(data);
+              lastSyncedQuizScores.current = data;
+            })
+            .catch(() => { });
+        }}
+      />
+    );
+  }
+
   if (currentRoute === "/retos/capitulo-3") {
     const currentStudent = students.find(s => user && s.email.toLowerCase() === user.email.toLowerCase());
     return (
@@ -431,7 +467,21 @@ export default function App() {
   return (
     <div className="font-sans min-h-screen bg-[#F8F9FA] text-[#1E293B] antialiased">
       {/* Translucent Backdrop Sticky Header Navigation row */}
-      <Navbar onOpenLogin={() => setLoginOpen(true)} />
+      <Navbar 
+        onOpenLogin={() => setLoginOpen(true)} 
+        onOpenRetosSidebar={() => setRetosSidebarOpen(true)}
+      />
+
+      {/* Retos Drawer Sidebar for all 4 chapters */}
+      <RetosSidebar
+        isOpen={retosSidebarOpen}
+        onClose={() => setRetosSidebarOpen(false)}
+        onSelectReto={(cap) => {
+          const target = `/retos/capitulo-${cap}`;
+          window.location.hash = target;
+          setCurrentRoute(target);
+        }}
+      />
 
       {/* Hero section */}
       <Hero />
