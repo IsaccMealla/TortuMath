@@ -41,7 +41,7 @@ interface StudentDashboardProps {
   setSubmissions: React.Dispatch<React.SetStateAction<any[]>>;
   quizScores: any[];
   setQuizScores: React.Dispatch<React.SetStateAction<any[]>>;
-  onOpenRetoBook?: () => void;
+  onOpenRetoBook?: (cap?: number) => void;
 }
 
 export default function StudentDashboard({
@@ -538,17 +538,30 @@ export default function StudentDashboard({
               <ChevronRight className={`w-3.5 h-3.5 transition-transform ${activeTab === "configuracion" ? "rotate-90 text-emerald-400" : "text-slate-500"}`} />
             </button>
 
-            {/* Acceso Directo al Reto del Libro de Texto (QR) */}
-            <div className="pt-2">
+            {/* Acceso Directo a los Retos del Libro de Texto (QR) */}
+            <div className="pt-2 space-y-1.5">
               <button
-                onClick={() => onOpenRetoBook ? onOpenRetoBook() : window.location.assign("#/retos/capitulo-1")}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-black transition-all cursor-pointer bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
+                onClick={() => onOpenRetoBook ? onOpenRetoBook(1) : window.location.assign("#/retos/capitulo-1")}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/40 hover:border-amber-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(245,158,11,0.2)] group"
               >
-                <div className="flex items-center gap-2.5">
-                  <BookOpen className="w-4 h-4 text-amber-400 group-hover:rotate-6 transition-transform" />
-                  <span className="truncate">Reto Libro (Cap. 1)</span>
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-3.5 h-3.5 text-amber-400 group-hover:rotate-6 transition-transform" />
+                  <span className="truncate">Reto Libro: Cap. 1</span>
                 </div>
-                <span className="text-[10px] bg-amber-500 text-black px-1.5 py-0.5 rounded font-black tracking-wider uppercase">
+                <span className="text-[9px] bg-amber-500 text-black px-1.5 py-0.5 rounded font-black tracking-wider uppercase">
+                  QR
+                </span>
+              </button>
+
+              <button
+                onClick={() => onOpenRetoBook ? onOpenRetoBook(2) : window.location.assign("#/retos/capitulo-2")}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer bg-gradient-to-r from-cyan-500/20 to-emerald-500/20 text-cyan-300 border border-cyan-500/40 hover:border-cyan-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(6,182,212,0.2)] group"
+              >
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-3.5 h-3.5 text-cyan-400 group-hover:rotate-6 transition-transform" />
+                  <span className="truncate">Reto Libro: Cap. 2</span>
+                </div>
+                <span className="text-[9px] bg-cyan-400 text-black px-1.5 py-0.5 rounded font-black tracking-wider uppercase">
                   QR
                 </span>
               </button>

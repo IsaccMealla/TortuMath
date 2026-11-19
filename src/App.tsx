@@ -11,6 +11,7 @@ import LoginModal from "./components/shared/LoginModal";
 import StudentDashboard from "./components/student/StudentDashboard";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import RetoCapitulo1 from "./components/student/RetoCapitulo1";
+import RetoCapitulo2 from "./components/student/RetoCapitulo2";
 
 import { StudentRegistration, AssignedMaterial, HomeworkSubmission, QuizLog } from "./types";
 
@@ -26,6 +27,9 @@ export default function App() {
       const path = window.location.pathname;
       const hash = window.location.hash;
       const search = window.location.search;
+      if (path.includes("capitulo-2") || hash.includes("capitulo-2") || search.includes("capitulo-2")) {
+        return "/retos/capitulo-2";
+      }
       if (path.includes("capitulo-1") || hash.includes("capitulo-1") || search.includes("capitulo-1")) {
         return "/retos/capitulo-1";
       }
@@ -38,7 +42,9 @@ export default function App() {
       const path = window.location.pathname;
       const hash = window.location.hash;
       const search = window.location.search;
-      if (path.includes("capitulo-1") || hash.includes("capitulo-1") || search.includes("capitulo-1")) {
+      if (path.includes("capitulo-2") || hash.includes("capitulo-2") || search.includes("capitulo-2")) {
+        setCurrentRoute("/retos/capitulo-2");
+      } else if (path.includes("capitulo-1") || hash.includes("capitulo-1") || search.includes("capitulo-1")) {
         setCurrentRoute("/retos/capitulo-1");
       } else {
         setCurrentRoute("/");
@@ -291,6 +297,34 @@ export default function App() {
   };
 
   // Priority: If the student scanned the QR code or navigated to the textbook challenge
+  if (currentRoute === "/retos/capitulo-2") {
+    const currentStudent = students.find(s => user && s.email.toLowerCase() === user.email.toLowerCase());
+    return (
+      <RetoCapitulo2
+        onBack={() => {
+          if (window.location.hash.includes("capitulo-2")) {
+            window.location.hash = "";
+          } else {
+            window.history.pushState({}, "", "/");
+          }
+          setCurrentRoute("/");
+        }}
+        userEmail={user?.email || "sofia.ramos@gmail.com"}
+        studentId={currentStudent?.id || "STU-001"}
+        studentName={currentStudent?.name || "Sofía Ramos Ortiz"}
+        onSuccessCompletion={() => {
+          fetch("http://localhost:5000/api/quizzes")
+            .then(res => res.json())
+            .then(data => {
+              setQuizScores(data);
+              lastSyncedQuizScores.current = data;
+            })
+            .catch(() => {});
+        }}
+      />
+    );
+  }
+
   if (currentRoute === "/retos/capitulo-1") {
     const currentStudent = students.find(s => user && s.email.toLowerCase() === user.email.toLowerCase());
     return (
@@ -333,9 +367,10 @@ export default function App() {
         setSubmissions={setSubmissions}
         quizScores={quizScores}
         setQuizScores={setQuizScores}
-        onOpenRetoBook={() => {
-          window.location.hash = "/retos/capitulo-1";
-          setCurrentRoute("/retos/capitulo-1");
+        onOpenRetoBook={(cap = 1) => {
+          const target = `/retos/capitulo-${cap}`;
+          window.location.hash = target;
+          setCurrentRoute(target);
         }}
       />
     );
